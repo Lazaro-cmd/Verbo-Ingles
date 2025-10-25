@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Visualizador y Práctica de Verbos Inglés</title>
   <style>
     :root { --bg: #f4f5fa; --fg: #1a1a1c; }
@@ -33,128 +33,86 @@
   <script>
     // Nueva estructura de verbos: base, past, part, ipa_us, ipa_uk, meaning, type
     const verbs = [
-      { base: "arise", past: "arose", part: "arisen", ipa_us: "/əˈraɪz/", ipa_uk: "/əˈraɪz/", meaning: "surgir, levantarse", type: "irregular" },
-      { base: "accept", past: "accepted", part: "accepted", ipa_us: "/əkˈsɛpt/", ipa_uk: "/əkˈsɛpt/", meaning: "aceptar", type: "regular" },
-      { base: "begin", past: "began", part: "begun", ipa_us: "/bɪˈɡɪn/", ipa_uk: "/bɪˈɡɪn/", meaning: "empezar, comenzar", type: "irregular" },
-      { base: "walk", past: "walked", part: "walked", ipa_us: "/wɔk/", ipa_uk: "/wɔːk/", meaning: "caminar", type: "regular" },
-      { base: "speak", past: "spoke", part: "spoken", ipa_us: "/spik/", ipa_uk: "/spiːk/", meaning: "hablar", type: "irregular" },
-      { base: "write", past: "wrote", part: "written", ipa_us: "/raɪt/", ipa_uk: "/raɪt/", meaning: "escribir", type: "irregular" },
-      { base: "read", past: "read", part: "read", ipa_us: "/rid/", ipa_uk: "/riːd/", meaning: "leer", type: "irregular" },
-      { base: "think", past: "thought", part: "thought", ipa_us: "/θɪŋk/", ipa_uk: "/θɪŋk/", meaning: "pensar", type: "irregular" },
-      { base: "know", past: "knew", part: "known", ipa_us: "/noʊ/", ipa_uk: "/nəʊ/", meaning: "saber, conocer", type: "irregular" },
-      { base: "take", past: "took", part: "taken", ipa_us: "/teɪk/", ipa_uk: "/teɪk/", meaning: "tomar, llevar", type: "irregular" }
+      { base: "arise", past: "arose", part: "arisen", ipa_us: "", ipa_uk: "", meaning: "surgir, levantarse", type: "irregular" },
+      { base: "accept", past: "accepted", part: "accepted", ipa_us: "", ipa_uk: "", meaning: "aceptar", type: "regular" },
+      { base: "begin", past: "began", part: "begun", ipa_us: "", ipa_uk: "", meaning: "empezar, comenzar", type: "irregular" },
+      { base: "walk", past: "walked", part: "walked", ipa_us: "", ipa_uk: "", meaning: "caminar", type: "regular" },
+      { base: "speak", past: "spoke", part: "spoken", ipa_us: "", ipa_uk: "", meaning: "hablar", type: "irregular" },
+      { base: "write", past: "wrote", part: "written", ipa_us: "", ipa_uk: "", meaning: "escribir", type: "irregular" },
+      { base: "read", past: "read", part: "read", ipa_us: "", ipa_uk: "", meaning: "leer", type: "irregular" },
+      { base: "think", past: "thought", part: "thought", ipa_us: "", ipa_uk: "", meaning: "pensar", type: "irregular" },
+      { base: "know", past: "knew", part: "known", ipa_us: "", ipa_uk: "", meaning: "saber, conocer", type: "irregular" },
+      { base: "take", past: "took", part: "taken", ipa_us: "", ipa_uk: "", meaning: "tomar, llevar", type: "irregular" },
+      { base: "be", past: "was / were", part: "been", ipa_us: "", ipa_uk: "", meaning: "ser, estar", type: "irregular" },
+      { base: "have", past: "had", part: "had", ipa_us: "", ipa_uk: "", meaning: "tener", type: "irregular" },
+      { base: "do", past: "did", part: "done", ipa_us: "", ipa_uk: "", meaning: "hacer", type: "irregular" },
+      { base: "go", past: "went", part: "gone", ipa_us: "", ipa_uk: "", meaning: "ir", type: "irregular" },
+      { base: "get", past: "got", part: "got / gotten", ipa_us: "", ipa_uk: "", meaning: "obtener, conseguir", type: "irregular" },
+      { base: "make", past: "made", part: "made", ipa_us: "", ipa_uk: "", meaning: "hacer, fabricar", type: "irregular" },
+      { base: "see", past: "saw", part: "seen", ipa_us: "", ipa_uk: "", meaning: "ver", type: "irregular" },
+      { base: "come", past: "came", part: "come", ipa_us: "", ipa_uk: "", meaning: "venir", type: "irregular" },
+      { base: "become", past: "became", part: "become", ipa_us: "", ipa_uk: "", meaning: "convertirse", type: "irregular" },
+      { base: "find", past: "found", part: "found", ipa_us: "", ipa_uk: "", meaning: "encontrar", type: "irregular" },
+      { base: "give", past: "gave", part: "given", ipa_us: "", ipa_uk: "", meaning: "dar", type: "irregular" },
+      { base: "eat", past: "ate", part: "eaten", ipa_us: "", ipa_uk: "", meaning: "comer", type: "irregular" },
+      { base: "drink", past: "drank", part: "drunk", ipa_us: "", ipa_uk: "", meaning: "beber", type: "irregular" },
+      { base: "buy", past: "bought", part: "bought", ipa_us: "", ipa_uk: "", meaning: "comprar", type: "irregular" },
+      { base: "bring", past: "brought", part: "brought", ipa_us: "", ipa_uk: "", meaning: "traer", type: "irregular" },
+      { base: "build", past: "built", part: "built", ipa_us: "", ipa_uk: "", meaning: "construir", type: "irregular" },
+      { base: "catch", past: "caught", part: "caught", ipa_us: "", ipa_uk: "", meaning: "atrapar", type: "irregular" },
+      { base: "choose", past: "chose", part: "chosen", ipa_us: "", ipa_uk: "", meaning: "elegir", type: "irregular" },
+      { base: "cost", past: "cost", part: "cost", ipa_us: "", ipa_uk: "", meaning: "costar", type: "irregular" },
+      { base: "cut", past: "cut", part: "cut", ipa_us: "", ipa_uk: "", meaning: "cortar", type: "irregular" },
+      { base: "fall", past: "fell", part: "fallen", ipa_us: "", ipa_uk: "", meaning: "caer", type: "irregular" },
+      { base: "feel", past: "felt", part: "felt", ipa_us: "", ipa_uk: "", meaning: "sentir", type: "irregular" },
+      { base: "fight", past: "fought", part: "fought", ipa_us: "", ipa_uk: "", meaning: "pelear", type: "irregular" },
+      { base: "forget", past: "forgot", part: "forgotten", ipa_us: "", ipa_uk: "", meaning: "olvidar", type: "irregular" },
+      { base: "forgive", past: "forgave", part: "forgiven", ipa_us: "", ipa_uk: "", meaning: "perdonar", type: "irregular" },
+      { base: "freeze", past: "froze", part: "frozen", ipa_us: "", ipa_uk: "", meaning: "congelar", type: "irregular" },
+      { base: "grow", past: "grew", part: "grown", ipa_us: "", ipa_uk: "", meaning: "crecer", type: "irregular" },
+      { base: "hang", past: "hung", part: "hung", ipa_us: "", ipa_uk: "", meaning: "colgar", type: "irregular" },
+      { base: "hear", past: "heard", part: "heard", ipa_us: "", ipa_uk: "", meaning: "oír", type: "irregular" },
+      { base: "hold", past: "held", part: "held", ipa_us: "", ipa_uk: "", meaning: "sostener", type: "irregular" },
+      { base: "keep", past: "kept", part: "kept", ipa_us: "", ipa_uk: "", meaning: "mantener", type: "irregular" },
+      { base: "learn", past: "learned / learnt", part: "learned / learnt", ipa_us: "", ipa_uk: "", meaning: "aprender", type: "irregular" },
+      { base: "leave", past: "left", part: "left", ipa_us: "", ipa_uk: "", meaning: "dejar, irse", type: "irregular" },
+      { base: "lend", past: "lent", part: "lent", ipa_us: "", ipa_uk: "", meaning: "prestar", type: "irregular" },
+      { base: "let", past: "let", part: "let", ipa_us: "", ipa_uk: "", meaning: "permitir", type: "irregular" },
+      { base: "lose", past: "lost", part: "lost", ipa_us: "", ipa_uk: "", meaning: "perder", type: "irregular" },
+      { base: "mean", past: "meant", part: "meant", ipa_us: "", ipa_uk: "", meaning: "significar", type: "irregular" },
+      { base: "meet", past: "met", part: "met", ipa_us: "", ipa_uk: "", meaning: "conocer, reunirse", type: "irregular" },
+      { base: "pay", past: "paid", part: "paid", ipa_us: "", ipa_uk: "", meaning: "pagar", type: "irregular" },
+      { base: "put", past: "put", part: "put", ipa_us: "", ipa_uk: "", meaning: "poner", type: "irregular" },
+      { base: "ride", past: "rode", part: "ridden", ipa_us: "", ipa_uk: "", meaning: "montar, conducir", type: "irregular" },
+      { base: "ring", past: "rang", part: "rung", ipa_us: "", ipa_uk: "", meaning: "sonar, llamar", type: "irregular" },
+      { base: "run", past: "ran", part: "run", ipa_us: "", ipa_uk: "", meaning: "correr", type: "irregular" },
+      { base: "say", past: "said", part: "said", ipa_us: "", ipa_uk: "", meaning: "decir", type: "irregular" },
+      { base: "sell", past: "sold", part: "sold", ipa_us: "", ipa_uk: "", meaning: "vender", type: "irregular" },
+      { base: "send", past: "sent", part: "sent", ipa_us: "", ipa_uk: "", meaning: "enviar", type: "irregular" },
+      { base: "set", past: "set", part: "set", ipa_us: "", ipa_uk: "", meaning: "poner, fijar", type: "irregular" },
+      { base: "show", past: "showed", part: "shown", ipa_us: "", ipa_uk: "", meaning: "mostrar", type: "irregular" },
+      { base: "sit", past: "sat", part: "sat", ipa_us: "", ipa_uk: "", meaning: "sentarse", type: "irregular" },
+      { base: "sleep", past: "slept", part: "slept", ipa_us: "", ipa_uk: "", meaning: "dormir", type: "irregular" },
+      { base: "spend", past: "spent", part: "spent", ipa_us: "", ipa_uk: "", meaning: "gastar, pasar (tiempo)", type: "irregular" },
+      { base: "stand", past: "stood", part: "stood", ipa_us: "", ipa_uk: "", meaning: "estar de pie", type: "irregular" },
+      { base: "teach", past: "taught", part: "taught", ipa_us: "", ipa_uk: "", meaning: "enseñar", type: "irregular" },
+      { base: "tell", past: "told", part: "told", ipa_us: "", ipa_uk: "", meaning: "contar, decir", type: "irregular" },
+      { base: "understand", past: "understood", part: "understood", ipa_us: "", ipa_uk: "", meaning: "entender", type: "irregular" },
+      { base: "wear", past: "wore", part: "worn", ipa_us: "", ipa_uk: "", meaning: "llevar puesto", type: "irregular" },
+      { base: "win", past: "won", part: "won", ipa_us: "", ipa_uk: "", meaning: "ganar", type: "irregular" },
+      { base: "work", past: "worked", part: "worked", ipa_us: "", ipa_uk: "", meaning: "trabajar", type: "regular" },
+      { base: "play", past: "played", part: "played", ipa_us: "", ipa_uk: "", meaning: "jugar, tocar (instrumento)", type: "regular" },
+      { base: "open", past: "opened", part: "opened", ipa_us: "", ipa_uk: "", meaning: "abrir", type: "regular" },
+      { base: "close", past: "closed", part: "closed", ipa_us: "", ipa_uk: "", meaning: "cerrar", type: "regular" }
     ];
 
     let idx = 0, typeFilter = 'todos', tries = 0, correct = 0;
-
     function filteredVerbs() {
       if (typeFilter === 'todos') return verbs;
       return verbs.filter(v => v.type === typeFilter);
     }
-
     function renderControls() {
       const arr = filteredVerbs();
       document.getElementById('controls').innerHTML = `
         <input id="search" placeholder="Buscar verbo..." />
-        <button onclick="buscar(document.getElementById('search').value)">Buscar</button>
-        <button onclick="back()" ${idx<=0?'disabled':''}>&larr; Atrás</button>
-        <span>${idx+1} / ${arr.length}</span>
-        <button onclick="next()" ${idx>=arr.length-1?'disabled':''}>Siguiente &rarr;</button>
-        <div class="filter">
-          <label>Tipo: </label>
-          <select id="typeFilter" onchange="typeFilter=this.value; idx=0; renderControls(); renderCard();">
-            <option value="todos" ${typeFilter==='todos'?'selected':''}>Todos</option>
-            <option value="regular" ${typeFilter==='regular'?'selected':''}>Regular</option>
-            <option value="irregular" ${typeFilter==='irregular'?'selected':''}>Irregular</option>
-          </select>
-        </div>
-      `;
-    }
-
-    function renderCard() {
-      const arr = filteredVerbs();
-      if (arr.length === 0) {
-        document.getElementById('app').innerHTML = '<div class="card"><h2>No hay verbos</h2></div>';
-        return;
-      }
-      const v = arr[idx];
-      document.getElementById('app').innerHTML = `
-        <div class="card">
-          <h2>Verbo: ${v.base}</h2>
-          <p class="ipa"><strong>IPA US:</strong> ${v.ipa_us} &nbsp; <strong>IPA UK:</strong> ${v.ipa_uk}</p>
-          <p class="meaning"><strong>Significado:</strong> ${v.meaning}</p>
-          <p><strong>Pasado:</strong> ${v.past}</p>
-          <p><strong>Participio:</strong> ${v.part}</p>
-          <p><strong>Tipo:</strong> ${v.type}</p>
-          <button class="audio-btn" onclick="speak('${v.base}', 'en-US')">🔊 US</button>
-          <button class="audio-btn" onclick="speak('${v.base}', 'en-GB')">🔊 UK</button>
-          <div class="practice">
-            <h3>Práctica Escrita</h3>
-            <p>Escribe las formas del verbo <strong>${v.base}</strong>:</p>
-            <div>
-              <label>Pasado: </label><input id="inPast" placeholder="past" />
-              <label>Participio: </label><input id="inPart" placeholder="participle" />
-              <button onclick="checkPractice()">Verificar</button>
-            </div>
-            <p id="feedback"></p>
-          </div>
-        </div>
-        <div class="card stats">
-          <h3>Estadísticas</h3>
-          <p>Intentos: ${tries} | Correctos: ${correct}</p>
-        </div>
-        <div id="controls" class="card"></div>
-      `;
-      renderControls();
-    }
-
-    function speak(text, lang) {
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = lang;
-        speechSynthesis.speak(utterance);
-      } else {
-        alert('Tu navegador no soporta síntesis de voz.');
-      }
-    }
-
-    window.next = function() {
-      if(idx < filteredVerbs().length-1) ++idx;
-      renderControls(); renderCard();
-    }
-
-    window.back = function() {
-      if(idx > 0) --idx;
-      renderControls(); renderCard();
-    }
-
-    window.buscar = function(q) {
-      const arr = filteredVerbs();
-      const term = q.trim().toLowerCase();
-      if (!term) { idx = 0; renderControls(); renderCard(); return; }
-      const i = arr.findIndex(v =>
-        v.base.toLowerCase().includes(term) ||
-        v.past.toLowerCase().includes(term) ||
-        v.part.toLowerCase().includes(term) ||
-        v.meaning.toLowerCase().includes(term)
-      );
-      idx = i>=0 ? i : 0;
-      renderControls(); renderCard();
-    };
-
-    window.checkPractice = function() {
-      tries++;
-      const arr = filteredVerbs();
-      const v = arr[idx];
-      const p = document.getElementById("inPast").value.trim().toLowerCase();
-      const part = document.getElementById("inPart").value.trim().toLowerCase();
-      let ok = (p === v.past.toLowerCase().split(" / ")[0]) && (part === v.part.toLowerCase().split(" / ")[0]);
-      correct += ok ? 1 : 0;
-      document.getElementById("feedback").innerHTML = ok ? "<span style='color:green'>✔️ Correcto</span>" : "<span style='color:red'>❌ Intenta otra vez</span>";
-      renderControls();
-    };
-
-    renderControls(); renderCard();
-  </script>
-</body>
-</html>
+        <button onclick="buscar(document.get
