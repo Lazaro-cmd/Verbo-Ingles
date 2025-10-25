@@ -1,289 +1,134 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Verbo Inglés - Protegido</title>
-<style>
-:root {
-  --bg-dark: #202B38;
-  --bg-light: #f4f4f4;
-  --card-dark: #2D3A4F;
-  --card-light: #fff;
-  --text-dark: #fff;
-  --text-light: #24292e;
-  --primary: #4f97ff;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 0;
-  min-height: 100vh;
-  background: var(--bg-light);
-  color: var(--text-light);
-  transition: background .3s, color .3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: var(--bg-dark);
-    color: var(--text-dark);
-  }
-  .card {
-    background: var(--card-dark);
-    color: var(--text-dark);
-  }
-}
-
-.container {
-  max-width: 400px;
-  width: 95vw;
-  margin: 2em auto;
-}
-
-.search {
-  margin: 10px 0;
-}
-
-.search input {
-  width: 90%;
-  padding: .7em;
-  font-size: 1em;
-}
-
-.stats {
-  font-size: .93em;
-  margin-bottom: 5px;
-}
-
-.cardbox {
-  perspective: 900px;
-  height: 250px;
-  margin-bottom: 1em;
-}
-
-.flip-card {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.39s;
-  transform-style: preserve-3d;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-  border-radius: 14px;
-}
-
-.flipped {
-  transform: rotateY(180deg);
-}
-
-.side {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.35em;
-  padding: 1.5em 1em;
-  box-sizing: border-box;
-  background: var(--card-light);
-  color: var(--text-light);
-  border-radius: 14px;
-}
-
-.back {
-  transform: rotateY(180deg);
-}
-
-.buttons button,
-.mode button {
-  margin: 10px 6px;
-  padding: .7em 1.2em;
-  font-size: 1em;
-  border-radius: 10px;
-  border: none;
-  background: var(--primary);
-  color: #fff;
-  cursor: pointer;
-  transition: background .2s;
-}
-
-.mode button.selected,
-.buttons button.selected {
-  background: #27ae60;
-}
-
-audio {
-  margin-top: 15px;
-}
-
-#proteccion {
-  text-align: center;
-  margin-top: 100px;
-}
-
-#proteccion input {
-  padding: .7em;
-  font-size: 1em;
-  margin: 10px 0;
-}
-
-#proteccion button {
-  padding: .7em 1.5em;
-  font-size: 1em;
-  border-radius: 10px;
-  border: none;
-  background: var(--primary);
-  color: #fff;
-  cursor: pointer;
-}
-</style>
-<script>
-var password = "orrebot@69;;;";
-
-function desbloquear() {
-  var userInput = document.getElementById("passInput").value;
-  if(userInput === password){
-    document.getElementById("contenido").style.display = "block";
-    document.getElementById("proteccion").style.display = "none";
-  }else{
-    alert("Contraseña incorrecta.");
-  }
-}
-
-window.onload = function(){
-  document.getElementById("contenido").style.display = "none";
-};
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verbo Inglés - Protegido</title>
+  <style>
+    :root{ --bg-start:#eef2f7; --bg-end:#ffffff; --bg-dark:#151a22; --bg-dark-2:#0f131a; --card-dark:#1f2a3a; --card-light:#ffffff; --text-dark:#e8eef7; --text-light:#1f2937; --primary:#4f97ff; --accent:#27ae60; --muted:#6b7280; --shadow:0 10px 25px rgba(0,0,0,.12); --radius:16px; --timing:cubic-bezier(.2,.8,.2,1); }
+    body{ font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Arial; margin:0; min-height:100vh; color:var(--text-light); background: radial-gradient(1000px 600px at 10% -10%, #dbeafe55, transparent 60%), radial-gradient(900px 500px at 110% 10%, #e9d5ff55, transparent 60%), linear-gradient(180deg, var(--bg-start), var(--bg-end)); display:flex; flex-direction:column; align-items:center; gap:16px; -webkit-font-smoothing:antialiased; }
+    @media (prefers-color-scheme: dark){ body{ color:var(--text-dark); background: radial-gradient(1000px 600px at 10% -10%, #1f293755, transparent 60%), radial-gradient(900px 500px at 110% 10%, #11182755, transparent 60%), linear-gradient(180deg, var(--bg-dark), var(--bg-dark-2)); } .card{ background:var(--card-dark); color:var(--text-dark);} .panel{ background:#0b1220; border-color:#111827;} }
+    header.app{ width:min(980px,94vw); margin:28px auto 0; padding:18px 20px; display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,.7); backdrop-filter:blur(10px); border:1px solid #e5e7eb; border-radius:20px; box-shadow:var(--shadow); }
+    @media (prefers-color-scheme: dark){ header.app{ background:rgba(17,24,39,.5); border-color:#1f2937;} }
+    .brand{ display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.2px; }
+    .brand .logo{ width:36px; height:36px; border-radius:10px; background: linear-gradient(135deg, var(--primary), #8b5cf6); box-shadow: inset 0 0 0 2px #ffffff22; }
+    .container{ width:min(520px,94vw); margin:8px auto 24px; }
+    .panel{ border:1px solid #e5e7eb; background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:18px; }
+    .search{ margin:8px 0 6px; }
+    .search input{ width:100%; padding:.8em 1em; font-size:1rem; border:1px solid #e5e7eb; border-radius:12px; outline:none; transition:border-color .2s var(--timing), box-shadow .2s var(--timing); }
+    .search input:focus{ border-color:#3b82f6; box-shadow:0 0 0 4px #3b82f622; }
+    .stats{ font-size:.92rem; color:var(--muted); margin:6px 2px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .progress-wrap{ margin:8px 0 14px; }
+    svg#progress{ width:100%; height:18px; display:block; }
+    .bar-bg{ fill:#e5e7eb; rx:8; ry:8; }
+    .bar-fill{ fill:url(#grad); transition:width .35s var(--timing); rx:8; ry:8; }
+    .mode{ display:flex; gap:8px; margin:6px 0 12px; flex-wrap:wrap; }
+    .btn{ margin:6px 0; padding:.65em 1.05em; font-size:.98rem; border-radius:12px; border:none; background:var(--primary); color:#fff; cursor:pointer; transition: transform .12s var(--timing), filter .2s var(--timing), background .2s; box-shadow:0 6px 16px rgba(79,151,255,.35); }
+    .btn:hover{ transform: translateY(-1px); filter:brightness(1.05); }
+    .btn:active{ transform: translateY(0); filter:brightness(.96); }
+    .btn.secondary{ background:#1118270d; color:inherit; border:1px solid #e5e7eb; box-shadow:none; }
+    .btn.selected{ background:var(--accent); box-shadow:0 6px 16px rgba(39,174,96,.35); }
+    .cardbox{ perspective:1200px; height:270px; margin-bottom:12px; }
+    .flip-card{ width:100%; height:100%; position:relative; transform-style:preserve-3d; border-radius:var(--radius); box-shadow:var(--shadow); transition: transform .5s var(--timing), box-shadow .3s var(--timing); cursor:pointer; }
+    .flip-card:hover{ box-shadow:0 16px 40px rgba(0,0,0,.18); }
+    .flipped{ transform: rotateY(180deg); }
+    .side{ position:absolute; inset:0; backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:1.26rem; padding:1.4em 1em; box-sizing:border-box; background:var(--card-light); color:var(--text-light); border-radius:var(--radius); }
+    .back{ transform: rotateY(180deg); }
+    #proteccion{ text-align:center; margin-top:16vh; }
+    #proteccion input{ padding:.8em 1em; font-size:1rem; border-radius:12px; border:1px solid #e5e7eb; }
+    #proteccion button{ padding:.8em 1.1em; font-size:1rem; border-radius:12px; border:none; background:var(--primary); color:#fff; cursor:pointer; }
+    [data-hidden="true"]{ display:none !important; }
+  </style>
 </head>
 <body>
-<div id="proteccion">
-  <h2>Introduce contraseña para ver el contenido</h2>
-  <input type="password" id="passInput" />
-  <button onclick="desbloquear()">Entrar</button>
-</div>
+  <header class="app" aria-label="Encabezado de la app">
+    <div class="brand"><div class="logo" aria-hidden="true"></div><span>Verbos Irregulares - Estudio</span></div>
+  </header>
 
-<div id="contenido">
-  <div class="container">
-    <div class="search">
-      <input type="text" id="search" placeholder="Buscar verbo...">
-    </div>
-    <div class="stats" id="stats"></div>
-    <div class="mode">
-      <button id="study" class="selected">Estudio</button>
-      <button id="practice">Práctica</button>
-    </div>
-    <div class="cardbox">
-      <div class="flip-card" id="flipCard">
-        <div class="side front" id="front"></div>
-        <div class="side back" id="back"></div>
-      </div>
-    </div>
-    <div class="buttons">
-      <button id="prev">Anterior</button>
-      <button id="flip">Voltear</button>
-      <button id="next">Siguiente</button>
-      <button id="reset">Resetear</button>
-      <button id="random">Aleatorio</button>
-    </div>
+  <div id="proteccion" class="container panel" aria-live="polite">
+    <h2>Introduce contraseña para ver el contenido</h2>
+    <input id="passInput" type="password" placeholder="Contraseña" autocomplete="current-password" />
+    <button id="btnEntrar">Entrar</button>
+    <p class="stats" id="bloqueoAviso">Seguridad activa: clic derecho/selección deshabilitados.</p>
   </div>
 
+  <div id="contenido" class="container" data-hidden="true" aria-hidden="true"></div>
+
   <script>
-  const verbs = [
-    { base: "be", past: "was/were", part: "been", meaning: "ser/estar", audio: "" },
-    { base: "become", past: "became", part: "become", meaning: "convertirse", audio: "" },
-    { base: "begin", past: "began", part: "begun", meaning: "empezar", audio: "" },
-    { base: "break", past: "broke", part: "broken", meaning: "romper", audio: "" },
-    { base: "bring", past: "brought", part: "brought", meaning: "traer", audio: "" }
-  ];
+    (function(){
+      const inhibit = (e)=>{ e.preventDefault(); e.stopPropagation(); return false; };
+      const lockHandlers = ()=>{
+        document.addEventListener('contextmenu', inhibit, {capture:true});
+        document.addEventListener('copy', inhibit, {capture:true});
+        document.addEventListener('selectstart', inhibit, {capture:true});
+      };
+      const unlockHandlers = ()=>{
+        document.removeEventListener('contextmenu', inhibit, {capture:true});
+        document.removeEventListener('copy', inhibit, {capture:true});
+        document.removeEventListener('selectstart', inhibit, {capture:true});
+      };
+      lockHandlers();
+      window.__lockHandlers__ = {unlock: unlockHandlers};
+    })();
 
-  let current = 0;
-  let flipped = false;
-  let studyMode = true;
-  let shown = Array(verbs.length).fill(false);
+    const PASS_HASH = "9fa3e1f5c7a2b4d6e8f0a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e4f5"; // placeholder hash
+    const sha256Hex = (m)=> crypto.subtle.digest('SHA-256', new TextEncoder().encode(m)).then(b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join(''));
+    const validarAcceso = async (i)=> (await sha256Hex(i)) === PASS_HASH;
 
-  function updateCard() {
-    flipped = false;
-    document.getElementById('flipCard').classList.remove('flipped');
-    let v = verbs[current];
-    document.getElementById("front").innerHTML = `<b>${v.base}</b><br>(${v.meaning})`;
-    document.getElementById("back").innerHTML = `<b>${v.base}</b> - <b>${v.past}</b> - <b>${v.part}</b><br>[${v.meaning}]`;
-    updateStats();
-  }
+    const state = { verbs:[
+      { base: 'be', past: 'was/were', part: 'been', meaning: 'ser/estar', audio: '' },
+      { base: 'become', past: 'became', part: 'become', meaning: 'convertirse', audio: '' },
+      { base: 'begin', past: 'began', part: 'begun', meaning: 'empezar', audio: '' },
+      { base: 'break', past: 'broke', part: 'broken', meaning: 'romper', audio: '' },
+      { base: 'bring', past: 'brought', part: 'brought', meaning: 'traer', audio: '' },
+    ], current:0, flipped:false, shown:[] };
 
-  function updateStats() {
-    let studied = shown.filter(Boolean).length;
-    document.getElementById("stats").textContent = `Vistos: ${studied} de ${verbs.length}`;
-  }
+    function el(tag, attrs={}, children=[]) { const n = document.createElement(tag); for (const [k,v] of Object.entries(attrs)) k==='class'? n.className=v : k==='html'? n.innerHTML=v : n.setAttribute(k,v); for (const c of children) n.appendChild(c); return n; }
 
-  document.getElementById("flip").onclick = () => {
-    flipped = !flipped;
-    document.getElementById('flipCard').classList.toggle('flipped');
-  };
+    function renderApp(){
+      const root = document.getElementById('contenido'); root.replaceChildren(); root.dataset.hidden='false'; root.setAttribute('aria-hidden','false');
+      const shell = el('div', {class:'panel'});
+      const searchWrap = el('div', {class:'search'});
+      const input = el('input', {id:'search', placeholder:'Buscar verbo...', type:'text'}); searchWrap.appendChild(input);
+      const stats = el('div', {class:'stats', id:'stats'});
+      const progWrap = el('div', {class:'progress-wrap'});
+      const svgNS='http://www.w3.org/2000/svg'; const svg=document.createElementNS(svgNS,'svg'); svg.id='progress'; svg.setAttribute('viewBox','0 0 100 18');
+      const defs=document.createElementNS(svgNS,'defs'); const grad=document.createElementNS(svgNS,'linearGradient'); grad.id='grad'; grad.setAttribute('x1','0'); grad.setAttribute('x2','1');
+      const s1=document.createElementNS(svgNS,'stop'); s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#4f97ff');
+      const s2=document.createElementNS(svgNS,'stop'); s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#27ae60'); grad.append(s1,s2); defs.appendChild(grad);
+      const bg=document.createElementNS(svgNS,'rect'); bg.setAttribute('class','bar-bg'); bg.setAttribute('x','0'); bg.setAttribute('y','3'); bg.setAttribute('width','100'); bg.setAttribute('height','12'); bg.setAttribute('rx','8');
+      const fill=document.createElementNS(svgNS,'rect'); fill.setAttribute('class','bar-fill'); fill.setAttribute('x','0'); fill.setAttribute('y','3'); fill.setAttribute('width','0'); fill.setAttribute('height','12'); fill.setAttribute('rx','8'); svg.append(defs,bg,fill); progWrap.appendChild(svg);
+      const modeWrap = el('div', {class:'mode'});
+      const studyBtn = el('button', {class:'btn selected', id:'study'}); studyBtn.textContent='Estudio';
+      const practiceBtn = el('button', {class:'btn secondary', id:'practice'}); practiceBtn.textContent='Práctica'; modeWrap.append(studyBtn, practiceBtn);
+      const cardBox = el('div', {class:'cardbox'});
+      const flipCard = el('div', {class:'flip-card', id:'flipCard'});
+      const front = el('div', {class:'side front', id:'front'});
+      const back = el('div', {class:'side back', id:'back'}); flipCard.append(front, back); cardBox.appendChild(flipCard);
+      const buttons = el('div', {class:'mode'});
+      const prev = el('button', {class:'btn', id:'prev'}); prev.textContent='Anterior';
+      const flipB = el('button', {class:'btn', id:'flip'}); flipB.textContent='Voltear';
+      const next = el('button', {class:'btn', id:'next'}); next.textContent='Siguiente';
+      const reset = el('button', {class:'btn secondary', id:'reset'}); reset.textContent='Resetear';
+      const random = el('button', {class:'btn secondary', id:'random'}); random.textContent='Aleatorio'; buttons.append(prev, flipB, next, reset, random);
+      const summary = el('details', {class:'stats'}); const sumSum = el('summary'); sumSum.textContent = 'Resumen de mejoras';
+      const list = el('ul', {html: '<li>UI moderna con encabezado y degradado</li><li>Animaciones y hover en tarjetas</li><li>Gráfica de progreso SVG en tiempo real</li><li>Protección: DOM limpio y bloqueo copiar/clic derecho</li><li>Validación por hash SHA-256 (sin password en claro)</li>'}); summary.append(sumSum, list);
+      const shellTop = el('div'); shellTop.append(summary);
+      shell.append(shellTop, searchWrap, stats, progWrap, modeWrap, cardBox, buttons); root.appendChild(shell);
 
-  document.getElementById("next").onclick = () => {
-    current = (current + 1) % verbs.length;
-    shown[current] = true;
-    updateCard();
-  };
-
-  document.getElementById("prev").onclick = () => {
-    current = (current - 1 + verbs.length) % verbs.length;
-    shown[current] = true;
-    updateCard();
-  };
-
-  document.getElementById("reset").onclick = () => {
-    current = 0;
-    shown = Array(verbs.length).fill(false);
-    updateCard();
-  };
-
-  document.getElementById("random").onclick = () => {
-    current = Math.floor(Math.random() * verbs.length);
-    shown[current] = true;
-    updateCard();
-  };
-
-  document.getElementById("study").onclick = () => {
-    studyMode = true;
-    document.getElementById("study").classList.add("selected");
-    document.getElementById("practice").classList.remove("selected");
-  };
-
-  document.getElementById("practice").onclick = () => {
-    studyMode = false;
-    document.getElementById("practice").classList.add("selected");
-    document.getElementById("study").classList.remove("selected");
-  };
-
-  document.getElementById("flipCard").onclick = () => {
-    document.getElementById("flip").click();
-  };
-
-  document.getElementById("search").oninput = function() {
-    const val = this.value.trim().toLowerCase();
-    if (!val) return updateCard();
-    let found = verbs.findIndex(v =>
-      v.base.toLowerCase().includes(val) ||
-      v.past.toLowerCase().includes(val) ||
-      v.part.toLowerCase().includes(val) ||
-      v.meaning.toLowerCase().includes(val)
-    );
-    if (found !== -1) {
-      current = found;
-      shown[current] = true;
+      state.shown = Array(state.verbs.length).fill(false);
+      function updateStats(){ const studied = state.shown.filter(Boolean).length; stats.textContent = `Vistos: ${studied} de ${state.verbs.length}`; const pct = state.verbs.length ? (studied/state.verbs.length)*100 : 0; fill.setAttribute('width', pct.toFixed(2)); }
+      function updateCard(){ state.flipped = false; flipCard.classList.remove('flipped'); const v = state.verbs[state.current]; front.innerHTML = `<b>${v.base}</b><br>(${v.meaning})`; back.innerHTML = `<b>${v.base}</b> - <b>${v.past}</b> - <b>${v.part}</b><br>[${v.meaning}]`; updateStats(); }
+      document.getElementById('flip').onclick = ()=>{ state.flipped = !state.flipped; flipCard.classList.toggle('flipped'); };
+      document.getElementById('next').onclick = ()=>{ state.current = (state.current + 1) % state.verbs.length; state.shown[state.current]=true; updateCard(); };
+      document.getElementById('prev').onclick = ()=>{ state.current = (state.current - 1 + state.verbs.length) % state.verbs.length; state.shown[state.current]=true; updateCard(); };
+      document.getElementById('reset').onclick = ()=>{ state.current=0; state.shown = Array(state.verbs.length).fill(false); updateCard(); };
+      document.getElementById('random').onclick = ()=>{ state.current = Math.floor(Math.random()*state.verbs.length); state.shown[state.current]=true; updateCard(); };
+      studyBtn.onclick = ()=>{ studyBtn.classList.add('selected'); practiceBtn.classList.remove('selected'); };
+      practiceBtn.onclick = ()=>{ practiceBtn.classList.add('selected'); studyBtn.classList.remove('selected'); };
+      flipCard.onclick = ()=> document.getElementById('flip').click();
+      input.oninput = function(){ const val = this.value.trim().toLowerCase(); if(!val) return updateCard(); const found = state.verbs.findIndex(v=> v.base.toLowerCase().includes(val) || v.past.toLowerCase().includes(val) || v.part.toLowerCase().includes(val) || v.meaning.toLowerCase().includes(val)); if(found!==-1){ state.current=found; state.shown[state.current]=true; updateCard(); } };
       updateCard();
     }
-  };
 
-  updateCard();
-  </script>
-</div>
-</body>
-</html>
+    async function intentarDesbloqueo(){
