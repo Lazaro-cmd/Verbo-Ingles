@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Verbos Irregulares - Protegido</title>
-  <noscript>
-    Tu navegador tiene JavaScript desactivado. Abre este archivo localmente (doble clic) o habilita JavaScript para ver el contenido.
-  </noscript>
+  <title>Verbos Irregulares - Estudio</title>
   <style>
     :root{ --bg-start:#eef2f7; --bg-end:#ffffff; --bg-dark:#151a22; --bg-dark-2:#0f131a; --card-dark:#1f2a3a; --card-light:#ffffff; --text-dark:#e8eef7; --text-light:#1f2937; --primary:#4f97ff; --accent:#27ae60; --muted:#6b7280; --shadow:0 10px 25px rgba(0,0,0,.12); --radius:16px; --timing:cubic-bezier(.2,.8,.2,1); }
     html,body{ height:100%; }
@@ -38,9 +35,7 @@
     .flipped{ transform: rotateY(180deg); }
     .side{ position:absolute; inset:0; backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:1.26rem; padding:1.4em 1em; box-sizing:border-box; background:var(--card-light); color:var(--text-light); border-radius:var(--radius); }
     .back{ transform: rotateY(180deg); }
-    #proteccion{ text-align:center; margin-top:16vh; }
-    #proteccion input{ padding:.8em 1em; font-size:1rem; border-radius:12px; border:1px solid #e5e7eb; }
-    #proteccion button{ padding:.8em 1.1em; font-size:1rem; border-radius:12px; border:none; background:var(--primary); color:#fff; cursor:pointer; }
+    /* ocultación por atributo, se eliminará al renderizar */
     [data-hidden="true"]{ display:none !important; }
     .help{ font-size:.9rem; color:var(--muted); margin-top:10px; }
   </style>
@@ -50,95 +45,125 @@
     <div class="brand"><div aria-hidden="true" class="logo"></div>Verbos Irregulares - Estudio</div>
   </header>
 
-  <div class="container panel" id="proteccion" aria-live="polite">
-    <p>Introduce contraseña para ver el contenido</p>
-    <input autocomplete="current-password" id="passInput" placeholder="Contraseña" type="password" />
-    <button id="btnEntrar">Entrar</button>
-    <p class="stats" id="bloqueoAviso">Seguridad activa: clic derecho/selección deshabilitados.</p>
-    <p class="help">Si no ves nada al entrar, abre este archivo localmente (file://) o desde el enlace raw de GitHub con JavaScript habilitado.</p>
-  </div>
-
-  <div class="container" id="contenido" data-hidden="true" aria-hidden="true"></div>
+  <!-- Eliminado el panel de protección por contraseña -->
+  <div class="container" id="contenido"></div>
 
   <script>
-    window.addEventListener('DOMContentLoaded', function(){
-      const inhibit = (e)=>{ e.preventDefault(); e.stopPropagation(); return false; };
-      function lockHandlers(){
-        document.addEventListener('contextmenu', inhibit, {capture:true});
-        document.addEventListener('copy', inhibit, {capture:true});
-        document.addEventListener('selectstart', inhibit, {capture:true});
-      }
-      function unlockHandlers(){
-        document.removeEventListener('contextmenu', inhibit, {capture:true});
-        document.removeEventListener('copy', inhibit, {capture:true});
-        document.removeEventListener('selectstart', inhibit, {capture:true});
-      }
-      lockHandlers();
-      window.__lockHandlers__ = {unlock: unlockHandlers, lock: lockHandlers};
+  // Mantener medidas de seguridad (bloqueo de clic derecho/copiar/selección)
+  const inhibit = (e)=>{ e.preventDefault(); e.stopPropagation(); return false; };
+  function lockHandlers(){
+    document.addEventListener('contextmenu', inhibit, {capture:true});
+    document.addEventListener('copy', inhibit, {capture:true});
+    document.addEventListener('selectstart', inhibit, {capture:true});
+  }
+  function unlockHandlers(){
+    document.removeEventListener('contextmenu', inhibit, {capture:true});
+    document.removeEventListener('copy', inhibit, {capture:true});
+    document.removeEventListener('selectstart', inhibit, {capture:true});
+  }
+  lockHandlers();
+  window.__lockHandlers__ = {unlock: unlockHandlers, lock: lockHandlers};
 
-      const PASS_HASH = 'c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7df31ad9e51a'; // SHA-256 de 'contraseña'
+  // Estado de la app y utilidades
+  const state = { verbs:[
+    { base: 'be', past: 'was/were', part: 'been', meaning: 'ser/estar' },
+    { base: 'become', past: 'became', part: 'become', meaning: 'convertirse' },
+    { base: 'begin', past: 'began', part: 'begun', meaning: 'empezar' },
+    { base: 'break', past: 'broke', part: 'broken', meaning: 'romper' },
+    { base: 'bring', past: 'brought', part: 'brought', meaning: 'traer' }
+  ], current:0, flipped:false, shown:[] };
 
-      async function sha256Hex(message){
-        if (window.crypto && window.crypto.subtle) {
-          const data = new TextEncoder().encode(message);
-          const hash = await crypto.subtle.digest('SHA-256', data);
-          return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
-        } else {
-          return message; // fallback mínimo
-        }
-      }
-      async function validarAcceso(input){
-        try { const h = await sha256Hex(input); return h === PASS_HASH; } catch(e){ return false; }
-      }
+  function el(tag, attrs={}, children=[]) {
+    const n = document.createElement(tag);
+    for (const [k,v] of Object.entries(attrs)) k==='class'? n.className=v : k==='html'? n.innerHTML=v : n.setAttribute(k,v);
+    for (const c of children) n.appendChild(c);
+    return n;
+  }
 
-      const state = { verbs:[
-        { base: 'be', past: 'was/were', part: 'been', meaning: 'ser/estar' },
-        { base: 'become', past: 'became', part: 'become', meaning: 'convertirse' },
-        { base: 'begin', past: 'began', part: 'begun', meaning: 'empezar' },
-        { base: 'break', past: 'broke', part: 'broken', meaning: 'romper' },
-        { base: 'bring', past: 'brought', part: 'brought', meaning: 'traer' }
-      ], current:0, flipped:false, shown:[] };
+  function renderApp(){
+    const root = document.getElementById('contenido');
+    root.replaceChildren();
+    root.removeAttribute('data-hidden');
+    root.setAttribute('aria-hidden','false');
 
-      function el(tag, attrs={}, children=[]) { const n = document.createElement(tag); for (const [k,v] of Object.entries(attrs)) k==='class'? n.className=v : k==='html'? n.innerHTML=v : n.setAttribute(k,v); for (const c of children) n.appendChild(c); return n; }
+    const shell = el('div', {class:'panel'});
 
-      function renderApp(){
-        const root = document.getElementById('contenido'); root.replaceChildren(); root.dataset.hidden='false'; root.setAttribute('aria-hidden','false');
-        const shell = el('div', {class:'panel'});
-        const searchWrap = el('div', {class:'search'});
-        const input = el('input', {id:'search', placeholder:'Buscar verbo...', type:'text'}); searchWrap.appendChild(input);
-        const stats = el('div', {class:'stats', id:'stats'});
-        const progWrap = el('div', {class:'progress-wrap'});
-        const svgNS='http://www.w3.org/2000/svg'; const svg=document.createElementNS(svgNS,'svg'); svg.id='progress'; svg.setAttribute('viewBox','0 0 100 18');
-        const defs=document.createElementNS(svgNS,'defs'); const grad=document.createElementNS(svgNS,'linearGradient'); grad.id='grad'; grad.setAttribute('x1','0'); grad.setAttribute('x2','1');
-        const s1=document.createElementNS(svgNS,'stop'); s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#4f97ff');
-        const s2=document.createElementNS(svgNS,'stop'); s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#27ae60'); grad.append(s1,s2); defs.appendChild(grad);
-        const bg=document.createElementNS(svgNS,'rect'); bg.setAttribute('class','bar-bg'); bg.setAttribute('x','0'); bg.setAttribute('y','3'); bg.setAttribute('width','100'); bg.setAttribute('height','12'); bg.setAttribute('rx','8');
-        const fill=document.createElementNS(svgNS,'rect'); fill.setAttribute('class','bar-fill'); fill.setAttribute('x','0'); fill.setAttribute('y','3'); fill.setAttribute('width','0'); fill.setAttribute('height','12'); fill.setAttribute('rx','8');
-        svg.append(defs,bg,fill); progWrap.appendChild(svg);
-        const modeWrap = el('div', {class:'mode'});
-        const studyBtn = el('button', {class:'btn selected', id:'study'}); studyBtn.textContent='Estudio';
-        const practiceBtn = el('button', {class:'btn secondary', id:'practice'}); practiceBtn.textContent='Práctica'; modeWrap.append(studyBtn, practiceBtn);
-        const cardBox = el('div', {class:'cardbox'});
-        const flipCard = el('div', {class:'flip-card', id:'flipCard'});
-        const front = el('div', {class:'side front', id:'front'});
-        const back = el('div', {class:'side back', id:'back'}); flipCard.append(front, back); cardBox.appendChild(flipCard);
-        const buttons = el('div', {class:'mode'});
-        const prev = el('button', {class:'btn', id:'prev'}); prev.textContent='Anterior';
-        const flipB = el('button', {class:'btn', id:'flip'}); flipB.textContent='Voltear';
-        const next = el('button', {class:'btn', id:'next'}); next.textContent='Siguiente';
-        const reset = el('button', {class:'btn secondary', id:'reset'}); reset.textContent='Resetear';
-        const random = el('button', {class:'btn secondary', id:'random'}); random.textContent='Aleatorio'; buttons.append(prev, flipB, next, reset, random);
-        const summary = el('details', {class:'stats'}); const sumSum = el('summary'); sumSum.textContent = 'Resumen de mejoras';
-        const list = el('ul', {html: '<li>Estructura HTML simplificada</li><li>JS inline con DOMContentLoaded</li><li>Barra de progreso SVG</li><li>Protección clic/selección</li><li>Validación SHA-256 local</li><li>Mensaje ayuda si JS bloqueado</li>'}); summary.append(sumSum, list);
-        const shellTop = el('div'); shellTop.append(summary);
-        shell.append(shellTop, searchWrap, stats, progWrap, modeWrap, cardBox, buttons); root.appendChild(shell);
-        state.shown = Array(state.verbs.length).fill(false);
-        function updateStats(){ const studied = state.shown.filter(Boolean).length; stats.textContent = `Vistos: ${studied} de ${state.verbs.length}`; const pct = state.verbs.length ? (studied/state.verbs.length)*100 : 0; fill.setAttribute('width', pct.toFixed(2)); }
-        function updateCard(){ state.flipped = false; flipCard.classList.remove('flipped'); const v = state.verbs[state.current]; front.innerHTML = `<b>${v.base}</b><br>(${v.meaning})`; back.innerHTML = `<b>${v.base}</b> - <b>${v.past}</b> - <b>${v.part}</b><br>[${v.meaning}]`; state.shown[state.current]=true; updateStats(); }
-        document.getElementById('flip').onclick = ()=>{ state.flipped = !state.flipped; flipCard.classList.toggle('flipped'); };
-        document.getElementById('next').onclick = ()=>{ state.current = (state.current + 1) % state.verbs.length; updateCard(); };
-        document.getElementById('prev').onclick = ()=>{ state.current = (state.current - 1 + state.verbs.length) % state.verbs.length; updateCard(); };
-        document.getElementById('reset').onclick = ()=>{ state.current=0; state.shown = Array(state.verbs.length).fill(false); updateCard(); };
-        document.getElementById('random').onclick = ()=>{ state.current = Math.floor(Math.random()*state.verbs.length); updateCard(); };
-        studyBtn.onclick = ()=>{ studyBtn.classList.add('selected'); practiceBtn.classList.remove('selected'); };
-        practiceBtn.onclick = ()=>{ practiceBtn.classList.add('selected'); studyBtn.classList.remove('selected'); };
+    const searchWrap = el('div', {class:'search'});
+    const input = el('input', {id:'search', placeholder:'Buscar verbo...', type:'text'});
+    searchWrap.appendChild(input);
+
+    const stats = el('div', {class:'stats', id:'stats'});
+
+    const progWrap = el('div', {class:'progress-wrap'});
+    const svgNS='http://www.w3.org/2000/svg';
+    const svg=document.createElementNS(svgNS,'svg'); svg.id='progress'; svg.setAttribute('viewBox','0 0 100 18');
+    const defs=document.createElementNS(svgNS,'defs'); const grad=document.createElementNS(svgNS,'linearGradient'); grad.id='grad'; grad.setAttribute('x1','0'); grad.setAttribute('x2','1');
+    const s1=document.createElementNS(svgNS,'stop'); s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#4f97ff');
+    const s2=document.createElementNS(svgNS,'stop'); s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#27ae60');
+    grad.append(s1,s2); defs.appendChild(grad);
+    const bg=document.createElementNS(svgNS,'rect'); bg.setAttribute('class','bar-bg'); bg.setAttribute('x','0'); bg.setAttribute('y','3'); bg.setAttribute('width','100'); bg.setAttribute('height','12'); bg.setAttribute('rx','8');
+    const fill=document.createElementNS(svgNS,'rect'); fill.setAttribute('class','bar-fill'); fill.setAttribute('x','0'); fill.setAttribute('y','3'); fill.setAttribute('width','0'); fill.setAttribute('height','12'); fill.setAttribute('rx','8');
+    svg.append(defs,bg,fill); progWrap.appendChild(svg);
+
+    const modeWrap = el('div', {class:'mode'});
+    const studyBtn = el('button', {class:'btn selected', id:'study'}); studyBtn.textContent='Estudio';
+    const practiceBtn = el('button', {class:'btn secondary', id:'practice'}); practiceBtn.textContent='Práctica';
+    modeWrap.append(studyBtn, practiceBtn);
+
+    const cardBox = el('div', {class:'cardbox'});
+    const flipCard = el('div', {class:'flip-card', id:'flipCard'});
+    const front = el('div', {class:'side front', id:'front'});
+    const back = el('div', {class:'side back', id:'back'});
+    flipCard.append(front, back); cardBox.appendChild(flipCard);
+
+    const buttons = el('div', {class:'mode'});
+    const prev = el('button', {class:'btn', id:'prev'}); prev.textContent='Anterior';
+    const flipB = el('button', {class:'btn', id:'flip'}); flipB.textContent='Voltear';
+    const next = el('button', {class:'btn', id:'next'}); next.textContent='Siguiente';
+    const reset = el('button', {class:'btn secondary', id:'reset'}); reset.textContent='Resetear';
+    const random = el('button', {class:'btn secondary', id:'random'}); random.textContent='Aleatorio';
+    buttons.append(prev, flipB, next, reset, random);
+
+    const summary = el('details', {class:'stats'});
+    const sumSum = el('summary'); sumSum.textContent = 'Resumen de mejoras';
+    const list = el('ul', {html: '<li>Estructura HTML simplificada</li><li>JS inline con DOMContentLoaded</li><li>Barra de progreso SVG</li><li>Protección clic/selección</li><li>Validación SHA-256 local (eliminada para acceso)</li><li>Mensaje ayuda si JS bloqueado</li>'});
+    summary.append(sumSum, list);
+    const shellTop = el('div'); shellTop.append(summary);
+
+    shell.append(shellTop, searchWrap, stats, progWrap, modeWrap, cardBox, buttons);
+    root.appendChild(shell);
+
+    state.shown = Array(state.verbs.length).fill(false);
+
+    function updateStats(){
+      const studied = state.shown.filter(Boolean).length;
+      stats.textContent = `Vistos: ${studied} de ${state.verbs.length}`;
+      const pct = state.verbs.length ? (studied/state.verbs.length)*100 : 0;
+      fill.setAttribute('width', pct.toFixed(2));
+    }
+
+    function updateCard(){
+      state.flipped = false; flipCard.classList.remove('flipped');
+      const v = state.verbs[state.current];
+      front.innerHTML = `<b>${v.base}</b><br>(${v.meaning})`;
+      back.innerHTML = `<b>${v.base}</b> - <b>${v.past}</b> - <b>${v.part}</b><br>[${v.meaning}]`;
+      state.shown[state.current]=true; updateStats();
+    }
+
+    document.getElementById('flip').onclick = ()=>{ state.flipped = !state.flipped; flipCard.classList.toggle('flipped'); };
+    document.getElementById('next').onclick = ()=>{ state.current = (state.current + 1) % state.verbs.length; updateCard(); };
+    document.getElementById('prev').onclick = ()=>{ state.current = (state.current - 1 + state.verbs.length) % state.verbs.length; updateCard(); };
+    document.getElementById('reset').onclick = ()=>{ state.current=0; state.shown = Array(state.verbs.length).fill(false); updateCard(); };
+    document.getElementById('random').onclick = ()=>{ state.current = Math.floor(Math.random()*state.verbs.length); updateCard(); };
+    studyBtn.onclick = ()=>{ studyBtn.classList.add('selected'); practiceBtn.classList.remove('selected'); };
+    practiceBtn.onclick = ()=>{ practiceBtn.classList.add('selected'); studyBtn.classList.remove('selected'); };
+
+    // Inicializar primera tarjeta
+    updateCard();
+  }
+
+  // Renderizar inmediatamente sin contraseña
+  window.addEventListener('DOMContentLoaded', renderApp);
+  </script>
+</body>
+</html>
