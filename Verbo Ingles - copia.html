@@ -24,114 +24,119 @@
     .practice button { background:#10b981; color:#fff; border:none; border-radius:6px; padding:7px 16px;}
     .audio-btn { background:#22d3ee; color:#fff; border:none; border-radius:5px; margin:2px 8px; padding:5px 10px; cursor:pointer;}
     .filter { margin:10px 0; }
+    .ipa { color: #666; font-size: 0.9em; margin: 4px 0; }
+    .meaning { color: #555; font-style: italic; margin: 6px 0; }
   </style>
 </head>
 <body>
-  <div class="controls" id="controls"></div>
   <div id="app"></div>
   <script>
-    // Ejemplo con algunos verbos, amplía el array según tu base:
+    // Nueva estructura de verbos: base, past, part, ipa_us, ipa_uk, meaning, type
     const verbs = [
-      { infinitive: "arise", past: "arose", participle: "arisen", spanish: "[translate:surgir, levantarse]", type: "irregular", freq: "medio" },
-      { infinitive: "accept", past: "accepted", participle: "accepted", spanish: "[translate:aceptar]", type: "regular", freq: "bajo" },
-      { infinitive: "begin", past: "began", participle: "begun", spanish: "[translate:empezar]", type: "irregular", freq: "alto" },
-      { infinitive: "walk", past: "walked", participle: "walked", spanish: "[translate:caminar]", type:"regular", freq:"alto" }
-      // ... añade todos los verbos
+      { base: "arise", past: "arose", part: "arisen", ipa_us: "/əˈraɪz/", ipa_uk: "/əˈraɪz/", meaning: "surgir, levantarse", type: "irregular" },
+      { base: "accept", past: "accepted", part: "accepted", ipa_us: "/əkˈsɛpt/", ipa_uk: "/əkˈsɛpt/", meaning: "aceptar", type: "regular" },
+      { base: "begin", past: "began", part: "begun", ipa_us: "/bɪˈɡɪn/", ipa_uk: "/bɪˈɡɪn/", meaning: "empezar, comenzar", type: "irregular" },
+      { base: "walk", past: "walked", part: "walked", ipa_us: "/wɔk/", ipa_uk: "/wɔːk/", meaning: "caminar", type: "regular" },
+      { base: "speak", past: "spoke", part: "spoken", ipa_us: "/spik/", ipa_uk: "/spiːk/", meaning: "hablar", type: "irregular" },
+      { base: "write", past: "wrote", part: "written", ipa_us: "/raɪt/", ipa_uk: "/raɪt/", meaning: "escribir", type: "irregular" },
+      { base: "read", past: "read", part: "read", ipa_us: "/rid/", ipa_uk: "/riːd/", meaning: "leer", type: "irregular" },
+      { base: "think", past: "thought", part: "thought", ipa_us: "/θɪŋk/", ipa_uk: "/θɪŋk/", meaning: "pensar", type: "irregular" },
+      { base: "know", past: "knew", part: "known", ipa_us: "/noʊ/", ipa_uk: "/nəʊ/", meaning: "saber, conocer", type: "irregular" },
+      { base: "take", past: "took", part: "taken", ipa_us: "/teɪk/", ipa_uk: "/teɪk/", meaning: "tomar, llevar", type: "irregular" }
     ];
 
-    let idx = 0;
-    let correct = 0, tries = 0;
-
-    // Filtrado por tipo o frecuencia
-    let filterType = "", filterFreq = "";
+    let idx = 0, typeFilter = 'todos', tries = 0, correct = 0;
 
     function filteredVerbs() {
-      return verbs.filter(v =>
-        (filterType === "" || v.type === filterType) &&
-        (filterFreq === "" || v.freq === filterFreq)
-      );
+      if (typeFilter === 'todos') return verbs;
+      return verbs.filter(v => v.type === typeFilter);
     }
 
     function renderControls() {
+      const arr = filteredVerbs();
       document.getElementById('controls').innerHTML = `
-        <button onclick="back()" ${idx === 0 ? "disabled":""}>Anterior</button>
-        <button onclick="next()" ${idx === filteredVerbs().length-1 ? "disabled":""}>Siguiente</button>
-        <input type="search" id="search" placeholder="Buscar..." oninput="buscar(this.value)">
-        <label>Tipo:
-          <select onchange="setType(this.value)">
-            <option value="">Todos</option>
-            <option value="regular">Regulares</option>
-            <option value="irregular">Irregulares</option>
+        <input id="search" placeholder="Buscar verbo..." />
+        <button onclick="buscar(document.getElementById('search').value)">Buscar</button>
+        <button onclick="back()" ${idx<=0?'disabled':''}>&larr; Atrás</button>
+        <span>${idx+1} / ${arr.length}</span>
+        <button onclick="next()" ${idx>=arr.length-1?'disabled':''}>Siguiente &rarr;</button>
+        <div class="filter">
+          <label>Tipo: </label>
+          <select id="typeFilter" onchange="typeFilter=this.value; idx=0; renderControls(); renderCard();">
+            <option value="todos" ${typeFilter==='todos'?'selected':''}>Todos</option>
+            <option value="regular" ${typeFilter==='regular'?'selected':''}>Regular</option>
+            <option value="irregular" ${typeFilter==='irregular'?'selected':''}>Irregular</option>
           </select>
-        </label>
-        <label>Frecuencia:
-          <select onchange="setFreq(this.value)">
-            <option value="">Todas</option>
-            <option value="alto">Alta</option>
-            <option value="medio">Media</option>
-            <option value="bajo">Baja</option>
-          </select>
-        </label>
-        <span>${idx+1} de ${filteredVerbs().length} verbos</span>
-        <span style="margin-left:18px;font-size:0.9em;color:#7fb;">✔️ Aciertos: ${correct} / 🔄 Intentos: ${tries}</span>
+        </div>
       `;
-    }
-    window.setType = function(type){ filterType=type; idx=0; renderControls(); renderCard(); };
-    window.setFreq = function(freq){ filterFreq=freq; idx=0; renderControls(); renderCard(); };
-
-    // Audio (demo: solo pronunciación con SpeechSynthesis)
-    function playAudio(text) {
-      if (!text) return;
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "en-US";
-      window.speechSynthesis.speak(u);
     }
 
     function renderCard() {
       const arr = filteredVerbs();
+      if (arr.length === 0) {
+        document.getElementById('app').innerHTML = '<div class="card"><h2>No hay verbos</h2></div>';
+        return;
+      }
       const v = arr[idx];
       document.getElementById('app').innerHTML = `
         <div class="card">
-          <h2>${v.infinitive}</h2>
-          <p>
-            <button class="audio-btn" onclick="playAudio('${v.infinitive}')">🔊 Infinitivo</button>
-            <button class="audio-btn" onclick="playAudio('${v.past}')">🔊 Pasado</button>
-            <button class="audio-btn" onclick="playAudio('${v.participle}')">🔊 Participio</button>
-          </p>
-          <p><b>Pasado:</b> ${v.past}</p>
-          <p><b>Participio:</b> ${v.participle}</p>
-          <p><b>Español:</b> ${v.spanish}</p>
-          <div class="stats">Verbo ${idx+1} de ${arr.length} · Tipo: ${v.type} · Frecuencia: ${v.freq||"-"}</div>
-          
+          <h2>Verbo: ${v.base}</h2>
+          <p class="ipa"><strong>IPA US:</strong> ${v.ipa_us} &nbsp; <strong>IPA UK:</strong> ${v.ipa_uk}</p>
+          <p class="meaning"><strong>Significado:</strong> ${v.meaning}</p>
+          <p><strong>Pasado:</strong> ${v.past}</p>
+          <p><strong>Participio:</strong> ${v.part}</p>
+          <p><strong>Tipo:</strong> ${v.type}</p>
+          <button class="audio-btn" onclick="speak('${v.base}', 'en-US')">🔊 US</button>
+          <button class="audio-btn" onclick="speak('${v.base}', 'en-GB')">🔊 UK</button>
           <div class="practice">
-            <label for="inPast">Práctica - escribe el pasado:</label>
-            <input id="inPast" placeholder="Past" autocomplete="off">
-            <label for="inPart">Participio:</label>
-            <input id="inPart" placeholder="Participle" autocomplete="off">
-            <button onclick="checkPractice()">Comprobar</button>
-            <div id="feedback"></div>
+            <h3>Práctica Escrita</h3>
+            <p>Escribe las formas del verbo <strong>${v.base}</strong>:</p>
+            <div>
+              <label>Pasado: </label><input id="inPast" placeholder="past" />
+              <label>Participio: </label><input id="inPart" placeholder="participle" />
+              <button onclick="checkPractice()">Verificar</button>
+            </div>
+            <p id="feedback"></p>
           </div>
         </div>
+        <div class="card stats">
+          <h3>Estadísticas</h3>
+          <p>Intentos: ${tries} | Correctos: ${correct}</p>
+        </div>
+        <div id="controls" class="card"></div>
       `;
+      renderControls();
+    }
+
+    function speak(text, lang) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        speechSynthesis.speak(utterance);
+      } else {
+        alert('Tu navegador no soporta síntesis de voz.');
+      }
     }
 
     window.next = function() {
       if(idx < filteredVerbs().length-1) ++idx;
       renderControls(); renderCard();
     }
+
     window.back = function() {
       if(idx > 0) --idx;
       renderControls(); renderCard();
     }
+
     window.buscar = function(q) {
       const arr = filteredVerbs();
       const term = q.trim().toLowerCase();
       if (!term) { idx = 0; renderControls(); renderCard(); return; }
       const i = arr.findIndex(v =>
-        v.infinitive.toLowerCase().includes(term) ||
+        v.base.toLowerCase().includes(term) ||
         v.past.toLowerCase().includes(term) ||
-        v.participle.toLowerCase().includes(term) ||
-        v.spanish.toLowerCase().includes(term)
+        v.part.toLowerCase().includes(term) ||
+        v.meaning.toLowerCase().includes(term)
       );
       idx = i>=0 ? i : 0;
       renderControls(); renderCard();
@@ -143,7 +148,7 @@
       const v = arr[idx];
       const p = document.getElementById("inPast").value.trim().toLowerCase();
       const part = document.getElementById("inPart").value.trim().toLowerCase();
-      let ok = (p === v.past.toLowerCase().split(" / ")[0]) && (part === v.participle.toLowerCase().split(" / ")[0]);
+      let ok = (p === v.past.toLowerCase().split(" / ")[0]) && (part === v.part.toLowerCase().split(" / ")[0]);
       correct += ok ? 1 : 0;
       document.getElementById("feedback").innerHTML = ok ? "<span style='color:green'>✔️ Correcto</span>" : "<span style='color:red'>❌ Intenta otra vez</span>";
       renderControls();
@@ -153,5 +158,3 @@
   </script>
 </body>
 </html>
-
-
