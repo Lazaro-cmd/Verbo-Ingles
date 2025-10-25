@@ -1,169 +1,150 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Verbos Irregulares - Estudio</title>
+  <title>Verbo Inglés · Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{ --bg-start:#eef2f7; --bg-end:#ffffff; --bg-dark:#151a22; --bg-dark-2:#0f131a; --card-dark:#1f2a3a; --card-light:#ffffff; --text-dark:#e8eef7; --text-light:#1f2937; --primary:#4f97ff; --accent:#27ae60; --muted:#6b7280; --shadow:0 10px 25px rgba(0,0,0,.12); --radius:16px; --timing:cubic-bezier(.2,.8,.2,1); }
-    html,body{ height:100%; }
-    body{ font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Arial; margin:0; min-height:100vh; color:var(--text-light); background: radial-gradient(1000px 600px at 10% -10%, #dbeafe55, transparent 60%), radial-gradient(900px 500px at 110% 10%, #e9d5ff55, transparent 60%), linear-gradient(180deg, var(--bg-start), var(--bg-end)); display:flex; flex-direction:column; align-items:center; gap:16px; -webkit-font-smoothing:antialiased; }
-    @media (prefers-color-scheme: dark){ body{ color:var(--text-dark); background: radial-gradient(1000px 600px at 10% -10%, #1f293755, transparent 60%), radial-gradient(900px 500px at 110% 10%, #11182755, transparent 60%), linear-gradient(180deg, var(--bg-dark), var(--bg-dark-2)); } .card{ background:var(--card-dark); color:var(--text-dark);} .panel{ background:#0b1220; border-color:#111827;} }
-    header.app{ width:min(980px,94vw); margin:28px auto 0; padding:18px 20px; display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,.7); backdrop-filter:blur(10px); border:1px solid #e5e7eb; border-radius:20px; box-shadow:var(--shadow); }
-    @media (prefers-color-scheme: dark){ header.app{ background:rgba(17,24,39,.5); border-color:#1f2937;} }
-    .brand{ display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.2px; }
-    .brand .logo{ width:36px; height:36px; border-radius:10px; background: linear-gradient(135deg, var(--primary), #8b5cf6); box-shadow: inset 0 0 0 2px #ffffff22; }
-    .container{ width:min(520px,94vw); margin:8px auto 24px; }
-    .panel{ border:1px solid #e5e7eb; background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:18px; }
-    .search{ margin:8px 0 6px; }
-    .search input{ width:100%; padding:.8em 1em; font-size:1rem; border:1px solid #e5e7eb; border-radius:12px; outline:none; transition:border-color .2s var(--timing), box-shadow .2s var(--timing); }
-    .search input:focus{ border-color:#3b82f6; box-shadow:0 0 0 4px #3b82f622; }
-    .stats{ font-size:.92rem; color:var(--muted); margin:6px 2px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .progress-wrap{ margin:8px 0 14px; }
-    svg#progress{ width:100%; height:18px; display:block; }
-    .bar-bg{ fill:#e5e7eb; rx:8; ry:8; }
-    .bar-fill{ fill:url(#grad); transition:width .35s var(--timing); rx:8; ry:8; }
-    .mode{ display:flex; gap:8px; margin:6px 0 12px; flex-wrap:wrap; }
-    .btn{ margin:6px 0; padding:.65em 1.05em; font-size:.98rem; border-radius:12px; border:none; background:var(--primary); color:#fff; cursor:pointer; transition: transform .12s var(--timing), filter .2s var(--timing), background .2s; box-shadow:0 6px 16px rgba(79,151,255,.35); }
-    .btn:hover{ transform: translateY(-1px); filter:brightness(1.05); }
-    .btn:active{ transform: translateY(0); filter:brightness(.96); }
-    .btn.secondary{ background:#1118270d; color:inherit; border:1px solid #e5e7eb; box-shadow:none; }
-    .btn.selected{ background:var(--accent); box-shadow:0 6px 16px rgba(39,174,96,.35); }
-    .cardbox{ perspective:1200px; height:270px; margin-bottom:12px; }
-    .flip-card{ width:100%; height:100%; position:relative; transform-style:preserve-3d; border-radius:var(--radius); box-shadow:var(--shadow); transition: transform .5s var(--timing), box-shadow .3s var(--timing); cursor:pointer; }
-    .flip-card:hover{ box-shadow:0 16px 40px rgba(0,0,0,.18); }
-    .flipped{ transform: rotateY(180deg); }
-    .side{ position:absolute; inset:0; backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:1.26rem; padding:1.4em 1em; box-sizing:border-box; background:var(--card-light); color:var(--text-light); border-radius:var(--radius); }
-    .back{ transform: rotateY(180deg); }
-    /* ocultación por atributo, se eliminará al renderizar */
-    [data-hidden="true"]{ display:none !important; }
-    .help{ font-size:.9rem; color:var(--muted); margin-top:10px; }
+    :root{ --bg:#0b0f14; --card:#111826; --muted:#9aa4b2; --fg:#e5eef7; --brand:#4f8cff; --brand-2:#22d3ee; --ok:#10b981; --warn:#f59e0b; --danger:#ef4444; --shadow:0 10px 25px rgba(0,0,0,.35);} *{box-sizing:border-box} html,body{height:100%} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu; background:radial-gradient(1200px 700px at 10% -10%, rgba(79,140,255,.12), transparent), radial-gradient(800px 500px at 120% 10%, rgba(34,211,238,.12), transparent), var(--bg); color:var(--fg)} a{color:var(--brand)} .wrap{min-height:100%; display:grid; grid-template-rows:auto 1fr auto}
+    header{display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px 18px; position:sticky; top:0; backdrop-filter:saturate(160%) blur(8px); background:linear-gradient(to bottom, rgba(17,24,38,.85), rgba(17,24,38,.55)); border-bottom:1px solid rgba(255,255,255,.06); z-index:5}
+    .logo{display:flex; gap:10px; align-items:center; font-weight:700}
+    .logo .dot{width:10px;height:10px;border-radius:999px;background:conic-gradient(var(--brand),var(--brand-2)); box-shadow:0 0 12px rgba(79,140,255,.8)}
+    .toolbar{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .search{display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); padding:8px 10px; border-radius:10px; min-width:260px}
+    .search input{all:unset; color:var(--fg); width:220px}
+    .search .clear{all:unset; cursor:pointer; padding:6px; border-radius:8px}
+    .search .clear:hover{background:rgba(255,255,255,.08)}
+    .accent{display:flex; gap:8px; align-items:center; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); padding:6px 8px; border-radius:10px}
+    .accent input{display:none}
+    .accent label{display:flex; align-items:center; gap:6px; padding:6px 8px; border-radius:8px; cursor:pointer; color:var(--muted); border:1px solid transparent}
+    .accent input:checked + label{color:var(--fg); background:rgba(79,140,255,.15); border-color:rgba(79,140,255,.35)}
+    .flag{width:18px; height:12px; border-radius:2px; overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,.2) inset}
+    .flag.us{background:linear-gradient(#b22234 50%, #fff 50%), repeating-linear-gradient(#b22234, #b22234 7.7%, #fff 7.7%, #fff 15.4%)}
+    .flag.uk{background:conic-gradient(#00247d 0 25%, #cf142b 0 50%, #fff 0 75%, #00247d 0 100%)}
+    .stats{display:flex; gap:10px; align-items:center}
+    .pill{font-size:12px; letter-spacing:.12em; padding:.25rem .5rem; border-radius:999px; background:rgba(255,255,255,.06); color:var(--muted); border:1px solid rgba(255,255,255,.08)}
+    main{display:grid; place-items:center; padding:18px}
+    .grid{display:grid; grid-template-columns:1fr; gap:18px; width:min(980px, 100%)}
+    .progress{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:10px}
+    .progress .bar{height:10px; background:linear-gradient(90deg, var(--brand), var(--brand-2)); width:0%; border-radius:999px; box-shadow:var(--shadow); transition:width .35s ease}
+    .card{position:relative; perspective:1200px; height:360px}
+    .flip{width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+    .card.show-back .flip{transform:rotateY(180deg)}
+    .face{position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); box-shadow:var(--shadow); padding:18px}
+    .back{transform:rotateY(180deg)}
+    h2{margin:.1em 0 .2em; font-size:34px}
+    .muted{color:var(--muted)}
+    .actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .btn{all:unset; display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; cursor:pointer; background:rgba(79,140,255,.12); color:#dbe7ff; border:1px solid rgba(79,140,255,.35)}
+    .btn.secondary{background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); color:var(--fg)}
+    .btn.ghost{background:transparent; border-color:transparent; color:var(--muted)}
+    .btn:hover{filter:brightness(1.08)}
+    .kbd{font:600 12px/1 Inter; padding:4px 6px; border-radius:6px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1)}
+    footer{padding:18px; text-align:center; color:var(--muted)}
+    @media (max-width:640px){ .card{height:420px} h2{font-size:28px} }
   </style>
 </head>
 <body>
-  <header aria-label="Encabezado de la app" class="app">
-    <div class="brand"><div aria-hidden="true" class="logo"></div>Verbos Irregulares - Estudio</div>
-  </header>
+  <div class="wrap">
+    <header>
+      <div class="logo"><span class="dot"></span> Verbo Inglés</div>
+      <div class="toolbar">
+        <div class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#9aa4b2" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="#9aa4b2" stroke-width="2"/></svg>
+          <input id="q" placeholder="Buscar: base, pasado, participio o traducción…" />
+          <button id="clear" class="clear" title="Limpiar búsqueda">✕</button>
+        </div>
+        <div class="accent" role="group" aria-label="Acento">
+          <input type="radio" name="accent" id="acc-us" value="us" checked>
+          <label for="acc-us"><span class="flag us"></span> US</label>
+          <input type="radio" name="accent" id="acc-uk" value="uk">
+          <label for="acc-uk"><span class="flag uk"></span> UK</label>
+        </div>
+        <div class="stats">
+          <span class="pill">Estudiados <span id="studied">0</span>/<span id="total">0</span></span>
+          <span class="pill">Progreso <span id="percent">0%</span></span>
+        </div>
+      </div>
+    </header>
 
-  <!-- Eliminado el panel de protección por contraseña -->
-  <div class="container" id="contenido"></div>
+    <main>
+      <div class="grid">
+        <div class="progress" aria-label="Barra de progreso">
+          <div id="bar" class="bar" style="width:0%"></div>
+        </div>
+
+        <section id="card" class="card" aria-live="polite">
+          <div class="flip">
+            <article id="front" class="face front"></article>
+            <article id="back" class="face back"></article>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button id="prev" class="btn" title="Anterior (←)">← Anterior</button>
+          <button id="next" class="btn" title="Siguiente (→)">Siguiente →</button>
+          <button id="flip" class="btn secondary" title="Voltear (Espacio)">Voltear tarjeta</button>
+          <button id="rand" class="btn secondary" title="Aleatorio (R)">Aleatorio</button>
+          <button id="favBtn" class="btn" title="Marcar favorito (A)">⭐ Favorito</button>
+          <button id="audioAll" class="btn ghost" title="Reproducir pronunciaciones">🔊 Escuchar</button>
+        </div>
+
+        <details open>
+          <summary class="pill">Ayuda e instrucciones</summary>
+          <div class="muted">
+            • Teclas: ← anterior, → siguiente, Espacio voltea, R aleatorio, A favorito. <br>
+            • Busca por verbo, significado, pasado o participio. <br>
+            • Cambia el acento (US/UK) para IPA y audio. <br>
+            • Progreso en tiempo real y barra visual. Favoritos se guardan localmente.
+          </div>
+        </details>
+      </div>
+    </main>
+
+    <footer>Hecho con ♥ — aprendizaje de verbos irregulares</footer>
+  </div>
 
   <script>
-  // Mantener medidas de seguridad (bloqueo de clic derecho/copiar/selección)
-  const inhibit = (e)=>{ e.preventDefault(); e.stopPropagation(); return false; };
-  function lockHandlers(){
-    document.addEventListener('contextmenu', inhibit, {capture:true});
-    document.addEventListener('copy', inhibit, {capture:true});
-    document.addEventListener('selectstart', inhibit, {capture:true});
-  }
-  function unlockHandlers(){
-    document.removeEventListener('contextmenu', inhibit, {capture:true});
-    document.removeEventListener('copy', inhibit, {capture:true});
-    document.removeEventListener('selectstart', inhibit, {capture:true});
-  }
-  lockHandlers();
-  window.__lockHandlers__ = {unlock: unlockHandlers, lock: lockHandlers};
+    const verbs = [
+      { base:'be', past:'was/were', part:'been', meaning:'ser/estar', ipa_us:'/biː/', ipa_uk:'/biː/', audio_us:'', audio_uk:'' },
+      { base:'begin', past:'began', part:'begun', meaning:'empezar', ipa_us:'/bɪˈɡɪn/', ipa_uk:'/bɪˈɡɪn/', audio_us:'', audio_uk:'' }
+    ];
 
-  // Estado de la app y utilidades
-  const state = { verbs:[
-    { base: 'be', past: 'was/were', part: 'been', meaning: 'ser/estar' },
-    { base: 'become', past: 'became', part: 'become', meaning: 'convertirse' },
-    { base: 'begin', past: 'began', part: 'begun', meaning: 'empezar' },
-    { base: 'break', past: 'broke', part: 'broken', meaning: 'romper' },
-    { base: 'bring', past: 'brought', part: 'brought', meaning: 'traer' }
-  ], current:0, flipped:false, shown:[] };
+    const state = { idx: 0, filtered: [...verbs], shown: [], favorites: new Set(JSON.parse(localStorage.getItem('vi:favs')||'[]')), audioHandles: [] };
+    function saveFavs(){ localStorage.setItem('vi:favs', JSON.stringify([...state.favorites])); }
+    function saveShown(){ localStorage.setItem('vi:shown', JSON.stringify(state.shown)); }
 
-  function el(tag, attrs={}, children=[]) {
-    const n = document.createElement(tag);
-    for (const [k,v] of Object.entries(attrs)) k==='class'? n.className=v : k==='html'? n.innerHTML=v : n.setAttribute(k,v);
-    for (const c of children) n.appendChild(c);
-    return n;
-  }
+    const $ = sel => document.querySelector(sel);
+    const front = $('#front'), back = $('#back'), bar = $('#bar'), studiedEl = $('#studied'), totalEl = $('#total'), percentEl = $('#percent'), card = $('#card'), favBtn = $('#favBtn');
+    const currentList = ()=> state.filtered;
+    const currentVerb = ()=> currentList()[state.idx];
 
-  function renderApp(){
-    const root = document.getElementById('contenido');
-    root.replaceChildren();
-    root.removeAttribute('data-hidden');
-    root.setAttribute('aria-hidden','false');
+    function updateProgress(){ const total=currentList().length; const studied=state.shown.length?state.shown.filter(Boolean).length:0; const pct= total? Math.round((studied/total)*100):0; totalEl.textContent=total; studiedEl.textContent=studied; percentEl.textContent=pct+'%'; bar.style.width=pct+'%'; }
+    function speak(url){ const a=new Audio(url||''); a.play().catch(()=>{}); return a; }
 
-    const shell = el('div', {class:'panel'});
+    function renderCard(){ const v=currentVerb(); if(!v){ front.textContent='Sin resultados'; back.textContent=''; return; } const acc=document.querySelector('input[name="accent"]:checked').value; const ipa= acc==='us'? v.ipa_us: v.ipa_uk; const audio= acc==='us'? v.audio_us: v.audio_uk; front.innerHTML=`<div class="pill">INFINITIVE</div><h2>${v.base}</h2><div class="muted">${v.meaning}</div><button class="btn secondary" id="audioFront">🔊 ${ipa}</button>`; back.innerHTML=`<div class="pill">VERB FORMS</div><div style="margin:.6em 0 1em"><div><strong>Past:</strong> ${v.past}</div><div><strong>Participle:</strong> ${v.part}</div></div><div class="muted">Traducción: ${v.meaning}</div><div class="actions" style="margin-top:10px"><button class="btn secondary" id="audioBack">🔊 ${ipa}</button></div>`; $('#audioFront').onclick=()=>{ state.audioHandles.push(speak(audio)); }; const ab=$('#audioBack'); if(ab) ab.onclick=()=>{ state.audioHandles.push(speak(audio)); }; const key=v.base.toLowerCase(); favBtn.textContent = (state.favorites.has(key)?'⭐ Favorito':'☆ Favorito'); }
 
-    const searchWrap = el('div', {class:'search'});
-    const input = el('input', {id:'search', placeholder:'Buscar verbo...', type:'text'});
-    searchWrap.appendChild(input);
+    const flip=()=> card.classList.toggle('show-back');
+    const next=()=>{ if(state.idx < currentList().length-1){ state.idx++; state.shown[state.idx]=true; saveShown(); renderCard(); updateProgress(); } };
+    const prev=()=>{ if(state.idx > 0){ state.idx--; renderCard(); updateProgress(); } };
+    const randomize=()=>{ if(currentList().length){ state.idx=Math.floor(Math.random()*currentList().length); state.shown[state.idx]=true; saveShown(); renderCard(); updateProgress(); } };
 
-    const stats = el('div', {class:'stats', id:'stats'});
+    $('#q').addEventListener('input', e=>{ const q=e.target.value.trim().toLowerCase(); state.filtered = q? verbs.filter(v=> [v.base,v.past,v.part,v.meaning].some(x=>(x||'').toLowerCase().includes(q))) : [...verbs]; state.idx=0; renderCard(); updateProgress(); });
+    $('#clear').onclick=()=>{ $('#q').value=''; $('#q').dispatchEvent(new Event('input')); };
+    document.querySelectorAll('input[name="accent"]').forEach(r=> r.addEventListener('change', ()=> renderCard()));
 
-    const progWrap = el('div', {class:'progress-wrap'});
-    const svgNS='http://www.w3.org/2000/svg';
-    const svg=document.createElementNS(svgNS,'svg'); svg.id='progress'; svg.setAttribute('viewBox','0 0 100 18');
-    const defs=document.createElementNS(svgNS,'defs'); const grad=document.createElementNS(svgNS,'linearGradient'); grad.id='grad'; grad.setAttribute('x1','0'); grad.setAttribute('x2','1');
-    const s1=document.createElementNS(svgNS,'stop'); s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#4f97ff');
-    const s2=document.createElementNS(svgNS,'stop'); s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#27ae60');
-    grad.append(s1,s2); defs.appendChild(grad);
-    const bg=document.createElementNS(svgNS,'rect'); bg.setAttribute('class','bar-bg'); bg.setAttribute('x','0'); bg.setAttribute('y','3'); bg.setAttribute('width','100'); bg.setAttribute('height','12'); bg.setAttribute('rx','8');
-    const fill=document.createElementNS(svgNS,'rect'); fill.setAttribute('class','bar-fill'); fill.setAttribute('x','0'); fill.setAttribute('y','3'); fill.setAttribute('width','0'); fill.setAttribute('height','12'); fill.setAttribute('rx','8');
-    svg.append(defs,bg,fill); progWrap.appendChild(svg);
+    $('#prev').onclick=prev; $('#next').onclick=next; $('#flip').onclick=flip; $('#rand').onclick=randomize;
+    favBtn.onclick=()=>{ const v=currentVerb(); if(!v) return; const key=v.base.toLowerCase(); if(state.favorites.has(key)) state.favorites.delete(key); else state.favorites.add(key); saveFavs(); renderCard(); };
+    $('#audioAll').onclick=()=>{ const v=currentVerb(); if(!v) return; const acc=document.querySelector('input[name="accent"]:checked').value; const urls=[acc==='us'?v.audio_us:v.audio_uk]; urls.forEach(u=> state.audioHandles.push(speak(u))); };
 
-    const modeWrap = el('div', {class:'mode'});
-    const studyBtn = el('button', {class:'btn selected', id:'study'}); studyBtn.textContent='Estudio';
-    const practiceBtn = el('button', {class:'btn secondary', id:'practice'}); practiceBtn.textContent='Práctica';
-    modeWrap.append(studyBtn, practiceBtn);
+    window.addEventListener('keydown', e=>{ if(e.target && ['INPUT','TEXTAREA'].includes(e.target.tagName)) return; if(e.code==='ArrowLeft'){ e.preventDefault(); prev(); } else if(e.code==='ArrowRight'){ e.preventDefault(); next(); } else if(e.code==='Space'){ e.preventDefault(); flip(); } else if(e.key==='r' || e.key==='R'){ randomize(); } else if(e.key==='a' || e.key==='A'){ favBtn.click(); } });
 
-    const cardBox = el('div', {class:'cardbox'});
-    const flipCard = el('div', {class:'flip-card', id:'flipCard'});
-    const front = el('div', {class:'side front', id:'front'});
-    const back = el('div', {class:'side back', id:'back'});
-    flipCard.append(front, back); cardBox.appendChild(flipCard);
-
-    const buttons = el('div', {class:'mode'});
-    const prev = el('button', {class:'btn', id:'prev'}); prev.textContent='Anterior';
-    const flipB = el('button', {class:'btn', id:'flip'}); flipB.textContent='Voltear';
-    const next = el('button', {class:'btn', id:'next'}); next.textContent='Siguiente';
-    const reset = el('button', {class:'btn secondary', id:'reset'}); reset.textContent='Resetear';
-    const random = el('button', {class:'btn secondary', id:'random'}); random.textContent='Aleatorio';
-    buttons.append(prev, flipB, next, reset, random);
-
-    const summary = el('details', {class:'stats'});
-    const sumSum = el('summary'); sumSum.textContent = 'Resumen de mejoras';
-    const list = el('ul', {html: '<li>Estructura HTML simplificada</li><li>JS inline con DOMContentLoaded</li><li>Barra de progreso SVG</li><li>Protección clic/selección</li><li>Validación SHA-256 local (eliminada para acceso)</li><li>Mensaje ayuda si JS bloqueado</li>'});
-    summary.append(sumSum, list);
-    const shellTop = el('div'); shellTop.append(summary);
-
-    shell.append(shellTop, searchWrap, stats, progWrap, modeWrap, cardBox, buttons);
-    root.appendChild(shell);
-
-    state.shown = Array(state.verbs.length).fill(false);
-
-    function updateStats(){
-      const studied = state.shown.filter(Boolean).length;
-      stats.textContent = `Vistos: ${studied} de ${state.verbs.length}`;
-      const pct = state.verbs.length ? (studied/state.verbs.length)*100 : 0;
-      fill.setAttribute('width', pct.toFixed(2));
-    }
-
-    function updateCard(){
-      state.flipped = false; flipCard.classList.remove('flipped');
-      const v = state.verbs[state.current];
-      front.innerHTML = `<b>${v.base}</b><br>(${v.meaning})`;
-      back.innerHTML = `<b>${v.base}</b> - <b>${v.past}</b> - <b>${v.part}</b><br>[${v.meaning}]`;
-      state.shown[state.current]=true; updateStats();
-    }
-
-    document.getElementById('flip').onclick = ()=>{ state.flipped = !state.flipped; flipCard.classList.toggle('flipped'); };
-    document.getElementById('next').onclick = ()=>{ state.current = (state.current + 1) % state.verbs.length; updateCard(); };
-    document.getElementById('prev').onclick = ()=>{ state.current = (state.current - 1 + state.verbs.length) % state.verbs.length; updateCard(); };
-    document.getElementById('reset').onclick = ()=>{ state.current=0; state.shown = Array(state.verbs.length).fill(false); updateCard(); };
-    document.getElementById('random').onclick = ()=>{ state.current = Math.floor(Math.random()*state.verbs.length); updateCard(); };
-    studyBtn.onclick = ()=>{ studyBtn.classList.add('selected'); practiceBtn.classList.remove('selected'); };
-    practiceBtn.onclick = ()=>{ practiceBtn.classList.add('selected'); studyBtn.classList.remove('selected'); };
-
-    // Inicializar primera tarjeta
-    updateCard();
-  }
-
-  // Renderizar inmediatamente sin contraseña
-  window.addEventListener('DOMContentLoaded', renderApp);
+    // Inicialización
+    state.shown = JSON.parse(localStorage.getItem('vi:shown')||'[]');
+    renderCard(); updateProgress();
   </script>
 </body>
 </html>
