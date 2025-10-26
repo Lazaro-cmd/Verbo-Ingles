@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Práctica de Verbos en Inglés — Avanzado</title>
   <style>
     :root {
@@ -26,144 +26,240 @@
         --chip: #172554;
       }
     }
-    * { box-sizing: border-box }
-    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--fg); margin: 0; }
-    #app { max-width: 960px; margin: 28px auto 80px; padding: 0 16px; }
-    .card { border-radius: 14px; background: var(--card); box-shadow: 0 6px 30px rgba(20,24,40,.14); padding: 22px; border: 1px solid var(--border); }
-    .title { font-weight: 800; font-size: 22px; margin: 0 0 12px; letter-spacing: .2px }
-
-    .controls { display: grid; grid-template-columns: 1fr repeat(3, max-content); gap: 12px; align-items: center; margin-bottom: 14px }
-    .controls input[type="search"]{ font-size: 15px; border-radius: 10px; border: 1px solid var(--border); padding: 10px 12px; background: transparent; color: var(--fg); }
-    .controls select, .controls button { font-size: 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip); color: var(--fg); padding: 9px 12px; cursor: pointer }
-    .controls button.primary { background: var(--accent); color: #fff; border-color: transparent }
-    .controls .hint { color: var(--muted); font-size: 12px }
-
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 8px }
-    .kv { border: 1px dashed var(--border); border-radius: 12px; padding: 12px }
-    .kv b { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em }
-    .kv div { font-size: 18px; font-weight: 700; margin-top: 6px }
-    .meaning { color: var(--muted); font-style: italic; margin: 6px 0 0 }
-
-    .stats { margin: 8px 0 0; color: var(--muted); font-size: 13px }
-
-    .practice { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; align-items: start }
-    .practice input{ width: 100%; font-size: 15px; border-radius: 10px; border: 1px solid var(--border); padding: 9px 10px; background: transparent; color: var(--fg) }
-    .practice button{ background: var(--ok); color: #fff; border: none; border-radius: 10px; padding: 10px 14px; font-weight: 700; cursor: pointer }
-    .practice .alt { background: #6b7280 }
-    .result-ok { color: var(--ok); font-weight: 800 }
-    .result-no { color: var(--no); font-weight: 800 }
-
-    .pager { display: flex; gap: 8px; margin-top: 14px }
-    .pager button{ border-radius: 10px; border: 1px solid var(--border); background: var(--chip); color: var(--fg); padding: 8px 12px; cursor: pointer }
-
-    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px }
-    .chip { background: var(--chip); border: 1px solid var(--border); padding: 5px 10px; border-radius: 999px; font-size: 12px }
-
-    .footer { margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); font-size: 12px }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      margin: 0;
+    }
+    #app {
+      max-width: 960px;
+      margin: 28px auto 80px;
+      padding: 0 16px;
+    }
+    .card {
+      border-radius: 14px;
+      background: var(--card);
+      box-shadow: 0 6px 30px rgba(20, 24, 40, 0.14);
+      padding: 22px;
+      border: 1px solid var(--border);
+    }
+    .title {
+      font-weight: 800;
+      font-size: 22px;
+      margin: 0 0 12px;
+      letter-spacing: 0.2px;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr repeat(3, max-content);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .controls input[type="search"] {
+      font-size: 15px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      background: transparent;
+      color: var(--fg);
+    }
+    .controls button {
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--fg);
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .controls button:hover {
+      background: var(--chip);
+      border-color: var(--accent);
+    }
+    .verb-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .verb-item {
+      display: grid;
+      grid-template-columns: 140px 140px 140px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--chip);
+      border: 1px solid var(--border);
+    }
+    .verb-item span {
+      font-size: 15px;
+    }
+    .verb-item .base {
+      font-weight: 600;
+    }
+    .verb-item button {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .verb-item button:hover {
+      opacity: 0.9;
+    }
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 8px;
+      background: var(--chip);
+      border: 1px solid var(--border);
+    }
+    .stat-item {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .stat-item .label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+    @media (max-width: 768px) {
+      .verb-item {
+        grid-template-columns: 1fr;
+      }
+      .controls {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div class="card">
+      <h1 class="title">Práctica de Verbos en Inglés — Avanzado</h1>
+      <div class="controls">
+        <input type="search" placeholder="Buscar verbo..." id="searchInput" />
+        <button onclick="filterAll()">Todos</button>
+        <button onclick="filterRegular()">Regulares</button>
+        <button onclick="filterIrregular()">Irregulares</button>
+      </div>
+      <div class="verb-list" id="verbList"></div>
+      <div class="stats">
+        <div class="stat-item">
+          <span class="label">Total: </span>
+          <span id="totalCount">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">Regulares: </span>
+          <span id="regularCount">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">Irregulares: </span>
+          <span id="irregularCount">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Dataset de ejemplo: puede ampliarse libremente
-    const VERBS = [
-      { base: "arise", past: "arose", part: "arisen", meaning: "surgir, levantarse", type: "irregular" },
-      { base: "accept", past: "accepted", part: "accepted", meaning: "aceptar", type: "regular" },
-      { base: "begin", past: "began", part: "begun", meaning: "empezar, comenzar", type: "irregular" },
-      { base: "walk", past: "walked", part: "walked", meaning: "caminar", type: "regular" },
-      { base: "speak", past: "spoke", part: "spoken", meaning: "hablar", type: "irregular" },
-      { base: "write", past: "wrote", part: "written", meaning: "escribir", type: "irregular" },
-      { base: "read", past: "read", part: "read", meaning: "leer", type: "irregular" },
-      { base: "think", past: "thought", part: "thought", meaning: "pensar", type: "irregular" },
-      { base: "know", past: "knew", part: "known", meaning: "saber, conocer", type: "irregular" },
-      { base: "take", past: "took", part: "taken", meaning: "tomar, llevar", type: "irregular" },
-      { base: "be", past: "was / were", part: "been", meaning: "ser, estar", type: "irregular" },
-      { base: "have", past: "had", part: "had", meaning: "tener", type: "irregular" },
-      { base: "do", past: "did", part: "done", meaning: "hacer", type: "irregular" },
-      { base: "go", past: "went", part: "gone", meaning: "ir", type: "irregular" },
-      { base: "get", past: "got", part: "got / gotten", meaning: "obtener, conseguir", type: "irregular" },
-      { base: "make", past: "made", part: "made", meaning: "hacer, fabricar", type: "irregular" },
-      { base: "see", past: "saw", part: "seen", meaning: "ver", type: "irregular" },
-      { base: "come", past: "came", part: "come", meaning: "venir", type: "irregular" },
-      { base: "become", past: "became", part: "become", meaning: "convertirse", type: "irregular" },
-      { base: "find", past: "found", part: "found", meaning: "encontrar", type: "irregular" },
-      { base: "give", past: "gave", part: "given", meaning: "dar", type: "irregular" },
-      { base: "eat", past: "ate", part: "eaten", meaning: "comer", type: "irregular" },
-      { base: "drink", past: "drank", part: "drunk", meaning: "beber", type: "irregular" },
-      { base: "buy", past: "bought", part: "bought", meaning: "comprar", type: "irregular" },
-      { base: "bring", past: "brought", part: "brought", meaning: "traer", type: "irregular" },
-      { base: "build", past: "built", part: "built", meaning: "construir", type: "irregular" },
-      { base: "catch", past: "caught", part: "caught", meaning: "atrapar", type: "irregular" },
-      { base: "choose", past: "chose", part: "chosen", meaning: "elegir", type: "irregular" },
-      { base: "cost", past: "cost", part: "cost", meaning: "costar", type: "irregular" },
-      { base: "cut", past: "cut", part: "cut", meaning: "cortar", type: "irregular" },
-      { base: "fall", past: "fell", part: "fallen", meaning: "caer", type: "irregular" },
-      { base: "feel", past: "felt", part: "felt", meaning: "sentir", type: "irregular" },
-      { base: "forget", past: "forgot", part: "forgotten", meaning: "olvidar", type: "irregular" },
-      { base: "forgive", past: "forgave", part: "forgiven", meaning: "perdonar", type: "irregular" },
-      { base: "freeze", past: "froze", part: "frozen", meaning: "congelar", type: "irregular" },
-      { base: "grow", past: "grew", part: "grown", meaning: "crecer", type: "irregular" },
-      { base: "hang", past: "hung", part: "hung", meaning: "colgar", type: "irregular" },
-      { base: "hear", past: "heard", part: "heard", meaning: "oír", type: "irregular" },
-      { base: "hold", past: "held", part: "held", meaning: "sostener", type: "irregular" },
-      { base: "keep", past: "kept", part: "kept", meaning: "mantener", type: "irregular" },
-      { base: "learn", past: "learned / learnt", part: "learned / learnt", meaning: "aprender", type: "irregular" },
-      { base: "leave", past: "left", part: "left", meaning: "dejar, irse", type: "irregular" },
-      { base: "lend", past: "lent", part: "lent", meaning: "prestar", type: "irregular" },
-      { base: "let", past: "let", part: "let", meaning: "permitir", type: "irregular" },
-      { base: "lose", past: "lost", part: "lost", meaning: "perder", type: "irregular" },
-      { base: "mean", past: "meant", part: "meant", meaning: "significar", type: "irregular" },
-      { base: "meet", past: "met", part: "met", meaning: "conocer, reunirse", type: "irregular" },
-      { base: "pay", past: "paid", part: "paid", meaning: "pagar", type: "irregular" },
-      { base: "put", past: "put", part: "put", meaning: "poner", type: "irregular" },
-      { base: "ride", past: "rode", part: "ridden", meaning: "montar, conducir", type: "irregular" },
-      { base: "ring", past: "rang", part: "rung", meaning: "sonar, llamar", type: "irregular" },
-      { base: "run", past: "ran", part: "run", meaning: "correr", type: "irregular" },
-      { base: "say", past: "said", part: "said", meaning: "decir", type: "irregular" },
-      { base: "sell", past: "sold", part: "sold", meaning: "vender", type: "irregular" },
-      { base: "send", past: "sent", part: "sent", meaning: "enviar", type: "irregular" },
-      { base: "set", past: "set", part: "set", meaning: "poner, fijar", type: "irregular" },
-      { base: "show", past: "showed", part: "shown", meaning: "mostrar", type: "irregular" },
-      { base: "sit", past: "sat", part: "sat", meaning: "sentarse", type: "irregular" },
-      { base: "sleep", past: "slept", part: "slept", meaning: "dormir", type: "irregular" },
-      { base: "spend", past: "spent", part: "spent", meaning: "gastar, pasar (tiempo)", type: "irregular" },
-      { base: "stand", past: "stood", part: "stood", meaning: "estar de pie", type: "irregular" },
-      { base: "teach", past: "taught", part: "taught", meaning: "enseñar", type: "irregular" },
-      { base: "tell", past: "told", part: "told", meaning: "contar, decir", type: "irregular" },
-      { base: "understand", past: "understood", part: "understood", meaning: "entender", type: "irregular" },
-      { base: "wear", past: "wore", part: "worn", meaning: "llevar puesto", type: "irregular" },
-      { base: "win", past: "won", part: "won", meaning: "ganar", type: "irregular" },
-      { base: "work", past: "worked", part: "worked", meaning: "trabajar", type: "regular" },
-      { base: "play", past: "played", part: "played", meaning: "jugar, tocar (instrumento)", type: "regular" },
-      { base: "open", past: "opened", part: "opened", meaning: "abrir", type: "regular" },
-      { base: "close", past: "closed", part: "closed", meaning: "cerrar", type: "regular" }
+    const verbs = [
+      { base: 'go', past: 'went', participle: 'gone', translation: 'ir', irregular: true },
+      { base: 'have', past: 'had', participle: 'had', translation: 'tener', irregular: true },
+      { base: 'do', past: 'did', participle: 'done', translation: 'hacer', irregular: true },
+      { base: 'say', past: 'said', participle: 'said', translation: 'decir', irregular: true },
+      { base: 'make', past: 'made', participle: 'made', translation: 'hacer/fabricar', irregular: true },
+      { base: 'know', past: 'knew', participle: 'known', translation: 'saber/conocer', irregular: true },
+      { base: 'get', past: 'got', participle: 'got/gotten', translation: 'obtener', irregular: true },
+      { base: 'see', past: 'saw', participle: 'seen', translation: 'ver', irregular: true },
+      { base: 'come', past: 'came', participle: 'come', translation: 'venir', irregular: true },
+      { base: 'think', past: 'thought', participle: 'thought', translation: 'pensar', irregular: true },
+      { base: 'take', past: 'took', participle: 'taken', translation: 'tomar', irregular: true },
+      { base: 'give', past: 'gave', participle: 'given', translation: 'dar', irregular: true },
+      { base: 'find', past: 'found', participle: 'found', translation: 'encontrar', irregular: true },
+      { base: 'tell', past: 'told', participle: 'told', translation: 'decir/contar', irregular: true },
+      { base: 'become', past: 'became', participle: 'become', translation: 'convertirse', irregular: true },
+      { base: 'walk', past: 'walked', participle: 'walked', translation: 'caminar', irregular: false },
+      { base: 'work', past: 'worked', participle: 'worked', translation: 'trabajar', irregular: false },
+      { base: 'play', past: 'played', participle: 'played', translation: 'jugar', irregular: false },
+      { base: 'study', past: 'studied', participle: 'studied', translation: 'estudiar', irregular: false },
+      { base: 'watch', past: 'watched', participle: 'watched', translation: 'mirar', irregular: false }
     ];
 
-    // Estado
-    let idx = 0;
-    let tries = 0, correct = 0;
-    let filterType = 'todos';
-    let q = '';
+    let currentFilter = 'all';
 
-    // Utilidades
-    const norm = s => (s||'').toString().trim().toLowerCase();
-    function matchFlexible(needle, hay) {
-      if (!needle) return true;
-      const n = norm(needle).replace(/\s+/g, ' ');
-      const h = norm(hay);
-      if (h.includes(n)) return true; // substring directo
-      // Coincidencia flexible: ignora acentos y signos
-      const toPlain = t => t.normalize('NFD').replace(/\p{Diacritic}/gu,'');
-      return toPlain(h).includes(toPlain(n));
+    function renderVerbs(filter = 'all', search = '') {
+      const verbList = document.getElementById('verbList');
+      verbList.innerHTML = '';
+      
+      let filtered = verbs.filter(v => {
+        const matchesSearch = v.base.toLowerCase().includes(search.toLowerCase()) ||
+                              v.translation.toLowerCase().includes(search.toLowerCase());
+        const matchesFilter = filter === 'all' || 
+                              (filter === 'regular' && !v.irregular) ||
+                              (filter === 'irregular' && v.irregular);
+        return matchesSearch && matchesFilter;
+      });
+
+      filtered.forEach(verb => {
+        const item = document.createElement('div');
+        item.className = 'verb-item';
+        item.innerHTML = `
+          <span class="base">${verb.base}</span>
+          <span>${verb.past}</span>
+          <span>${verb.participle}</span>
+          <span>${verb.translation}</span>
+          <button onclick="practiceVerb('${verb.base}')">Practicar</button>
+        `;
+        verbList.appendChild(item);
+      });
+
+      updateStats();
     }
 
-    function filtered() {
-      return VERBS.filter(v => (filterType==='todos' || v.type===filterType) && (
-        matchFlexible(q, v.base) || matchFlexible(q, v.past) || matchFlexible(q, v.part) || matchFlexible(q, v.meaning)
-      ));
+    function updateStats() {
+      document.getElementById('totalCount').textContent = verbs.length;
+      document.getElementById('regularCount').textContent = verbs.filter(v => !v.irregular).length;
+      document.getElementById('irregularCount').textContent = verbs.filter(v => v.irregular).length;
     }
 
-    function nextV() { const arr = filtered(); idx = arr.length ? (idx + 1) % arr.length : 0; render(); }
-    function prevV() { const arr = filtered(); idx = arr.length ? (idx - 1 + arr.length) % arr.length : 0; render(); }
-    function
+    function filterAll() {
+      currentFilter = 'all';
+      renderVerbs('all', document.getElementById('searchInput').value);
+    }
 
+    function filterRegular() {
+      currentFilter = 'regular';
+      renderVerbs('regular', document.getElementById('searchInput').value);
+    }
+
+    function filterIrregular() {
+      currentFilter = 'irregular';
+      renderVerbs('irregular', document.getElementById('searchInput').value);
+    }
+
+    function practiceVerb(base) {
+      const verb = verbs.find(v => v.base === base);
+      if (verb) {
+        alert(`Practicar: ${verb.base}\nPasado: ${verb.past}\nParticipio: ${verb.participle}\nTraducción: ${verb.translation}`);
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      renderVerbs(currentFilter, e.target.value);
+    });
+
+    renderVerbs();
+  </script>
+</body>
+</html>
